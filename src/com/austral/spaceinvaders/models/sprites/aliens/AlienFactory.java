@@ -22,8 +22,8 @@ public class AlienFactory {
 		return new Alien(x, y, new Velocity(2, Direction.SOUTH), new Velocity(2, Direction.EAST), 120, new Velocity(4, Direction.SOUTH), 10, LARGE_ALIEN_IMAGE);
 	}
 
-	public static Alien createUFO(int x, int y) {
-		return new Alien(x, y, new Velocity(2, Direction.SOUTH), new Velocity(2, Direction.EAST), 120, new Velocity(4, Direction.SOUTH), 10, UFO_IMAGE);
+	public static Alien createUFO(int x, int y, int randomReward) {
+		return new Alien(x, y, new Velocity(2, Direction.SOUTH), new Velocity(2, Direction.EAST), 120, new Velocity(4, Direction.SOUTH), randomReward, UFO_IMAGE);
 	}
 
 }

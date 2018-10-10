@@ -136,6 +136,17 @@ public class GameEnvironment implements GlobalConfiguration {
 			bombs.remove(hit.getBetaCollider());
 		});
 
+		//spawn UFO
+		final Random randomGenerator = new Random();
+		int low = 4500;
+		int high = 6000;
+		int randomTime = randomGenerator.nextInt(high - low) + low;
+
+		if(gameSession.getTimePlayed()%randomTime == 0){
+			System.out.println(gameSession.getTimePlayed());
+			spawnUFO();
+		}
+
 		//Animate sprites for next game tick
 		animateAliens();
 		animateBombs();
@@ -148,6 +159,15 @@ public class GameEnvironment implements GlobalConfiguration {
 		//spawn new alien bombs
 		dropAlienBombs();
 		gameModifierService.ping();
+	}
+
+	private void spawnUFO(){
+		final Random randomGenerator = new Random();
+		int low = 50;
+		int high = 300;
+		int randomReward = randomGenerator.nextInt(high - low) + low;
+
+		aliens.add(AlienFactory.createUFO(randomGenerator.nextInt(frameWidth - 120) + 60, 10, randomReward));
 	}
 
 	private void dropAlienBombs() {

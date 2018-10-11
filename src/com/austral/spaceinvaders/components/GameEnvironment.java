@@ -126,7 +126,7 @@ public class GameEnvironment implements GlobalConfiguration {
 		//Aliens have invaded
 		aliens.forEach(alien -> {
 			if (alien.getY() + 20 >= player.getY()) {
-				gameSession.defeat();
+				gameSession.invasion();
 			}
 		});
 

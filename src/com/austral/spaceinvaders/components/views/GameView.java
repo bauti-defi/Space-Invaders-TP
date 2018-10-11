@@ -41,6 +41,25 @@ public class GameView extends JPanel implements GlobalConfiguration {
 		}
 	}
 
+	public void renderGameOver(String message){
+		Graphics g = this.getGraphics();
+
+		g.setColor(Color.black);
+		g.fillRect(0, 0, frameWidth, frameHeight);
+
+		g.setColor(new Color(0, 32, 48));
+		g.fillRect(50, frameWidth / 2 - 30, frameWidth - 100, 50);
+		g.setColor(Color.white);
+		g.drawRect(50, frameWidth / 2 - 30, frameWidth - 100, 50);
+
+		Font small = new Font("Helvetica", Font.BOLD, 14);
+		FontMetrics metr = this.getFontMetrics(small);
+
+		g.setColor(Color.white);
+		g.setFont(small);
+		g.drawString(message, (frameWidth - metr.stringWidth(message)) / 2, frameWidth / 2);
+	}
+
 	public void renderSprites(Graphics g) {
 		gameSession.getSprites().forEach(sprite -> sprite.render(g));
 	}

@@ -10,6 +10,8 @@ public interface GlobalConfiguration {
 	static int groundY = 550;
 	static int playerStartX = 200;
 	static int playerStartY = 540;
-	String leadboardFilePath = System.getProperty("user.home") + File.separator + "Space Invaders" + File.separator + "leaderboard.txt";
+	static int minimumUFOSpawnDelay = 45;
+	static int maxUFOSPawnDelay = 60;
+	static String leadboardFilePath = System.getProperty("user.home") + File.separator + "Space Invaders" + File.separator + "leaderboard.txt";
 
 }

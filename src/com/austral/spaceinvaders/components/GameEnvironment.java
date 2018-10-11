@@ -12,6 +12,7 @@ import com.austral.spaceinvaders.models.sprites.aliens.Bomb;
 import com.austral.spaceinvaders.physics.CollisionFlag;
 import com.austral.spaceinvaders.physics.Direction;
 import com.austral.spaceinvaders.physics.Velocity;
+import com.austral.spaceinvaders.util.RandomGenerator;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -26,16 +27,15 @@ public class GameEnvironment implements GlobalConfiguration {
 	private ArrayList<Bomb> bombs = new ArrayList<>();
 	private final GameModifierService gameModifierService;
 	private Level currentLevel;
-	private long finishCycleTickAmount;
-	private int randomTimeUFO;
+	private int gameTicksSinceUFOSpawn;
+	private long randomTimeUFO;
 
 	public GameEnvironment(GameSession gameSession) {
 		this.gameSession = gameSession;
 		this.gameModifierService = new GameModifierService(this);
 		this.gameModifierService.supplyGameModifier(new GodMode());
 		this.player = new Player(playerStartX, playerStartY, 3, 4);
-		this.finishCycleTickAmount = 30;
-		this.randomTimeUFO = 4000;
+		this.randomTimeUFO = RandomGenerator.getRandomIntBetween(minimumUFOSpawnDelay, maxUFOSPawnDelay) * 1000;
 	}
 
 	public Player getPlayer() {
@@ -51,9 +51,8 @@ public class GameEnvironment implements GlobalConfiguration {
 	void initiateLevel(Level level) {
 		disposeLevel();
 		this.currentLevel = level;
-		final Random randomGenerator = new Random();
 		for (int alienCount = 0; alienCount < level.getAlienCount(); alienCount++) {
-			aliens.add(AlienFactory.createSmall(randomGenerator.nextInt(frameWidth - 120) + 60, 10));
+			aliens.add(AlienFactory.createSmall(RandomGenerator.getRandomIntBetween(60, frameWidth - 120), 10));
 		}
 	}
 
@@ -140,12 +139,8 @@ public class GameEnvironment implements GlobalConfiguration {
 			bombs.remove(hit.getBetaCollider());
 		});
 
-		//spawn UFO
-		if(finishCycleTickAmount%4500 == 0){
-			randomTimeUFO = generateRandomNumberBetween(60, 45) * 100;//lo multiplico por 100 para darle mayor probabilidad de que el resto sea 0
-		}
-
-		if(finishCycleTickAmount%randomTimeUFO == 0){
+		//Spawn UFO
+		if (gameTicksSinceUFOSpawn > 0 && (gameTicksSinceUFOSpawn * 30) % randomTimeUFO == 0) {
 			spawnUFO();
 		}
 
@@ -158,23 +153,18 @@ public class GameEnvironment implements GlobalConfiguration {
 			player.animate();
 		}
 
+		//increment ufo game tick
+		gameTicksSinceUFOSpawn++;
+
 		//spawn new alien bombs
 		dropAlienBombs();
+
 		gameModifierService.ping();
-
-		//add a finish cycle
-		finishCycleTickAmount += 30;
 	}
 
-	private void spawnUFO(){
-		final Random randomGenerator = new Random();
-
-		aliens.add(AlienFactory.createUFO(randomGenerator.nextInt(frameWidth - 120) + 60, 10, generateRandomNumberBetween(300,50)));
-	}
-
-	private int generateRandomNumberBetween(int high, int low){
-		final Random randomGenerator = new Random();
-		return randomGenerator.nextInt(high - low) + low;
+	private void spawnUFO() {
+		aliens.add(AlienFactory.createUFO(RandomGenerator.getRandomIntBetween(60, frameWidth - 120), 10, RandomGenerator.getRandomIntBetween(50, 300)));
+		randomTimeUFO = RandomGenerator.getRandomIntBetween(minimumUFOSpawnDelay, maxUFOSPawnDelay) * 1000;
 	}
 
 	private void dropAlienBombs() {

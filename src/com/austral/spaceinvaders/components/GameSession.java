@@ -17,7 +17,6 @@ public class GameSession implements GlobalConfiguration, Runnable {
 	private final GameView gameView;
 	private final GamePlayer gamePlayer;
 	private boolean inGame;
-	private long timePlayed;
 
 
 	public GameSession(final GamePlayer gamePlayer) {
@@ -49,8 +48,6 @@ public class GameSession implements GlobalConfiguration, Runnable {
 			gameEnvironment.executeNextAnimationCycle();
 			gameView.repaint();
 
-			timePlayed += gameTickDuration;
-
 			try {
 				Thread.sleep(getGameTickWithLagCompensation(renderStartTime));
 			} catch (InterruptedException e) {
@@ -77,10 +74,6 @@ public class GameSession implements GlobalConfiguration, Runnable {
 	private long getGameTickWithLagCompensation(long renderStartTime) {
 		long renderLagDuration = System.currentTimeMillis() - renderStartTime;
 		return gameTickDuration - renderLagDuration;
-	}
-
-	public long getTimePlayed(){
-		return timePlayed;
 	}
 
 	public void notifyKeyPressed(KeyEvent event) {

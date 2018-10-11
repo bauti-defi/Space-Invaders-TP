@@ -17,6 +17,7 @@ public class GameSession implements GlobalConfiguration, Runnable {
 	private final GameView gameView;
 	private final GamePlayer gamePlayer;
 	private boolean inGame;
+	private String gameOverMessage;
 
 
 	public GameSession(final GamePlayer gamePlayer) {
@@ -54,6 +55,8 @@ public class GameSession implements GlobalConfiguration, Runnable {
 				System.out.println("interrupted");
 			}
 		}
+
+		gameView.renderGameOver(gameOverMessage);
 	}
 
 	public void quit() {
@@ -62,12 +65,21 @@ public class GameSession implements GlobalConfiguration, Runnable {
 
 	public void victory() {
 		inGame = false;
-		System.out.println("Victory");
+		gameOverMessage = "Victory";
+		System.out.println(gameOverMessage);
 	}
 
 	public void defeat() {
 		inGame = false;
-		System.out.println("Defeat");
+		gameOverMessage = "Defeat";
+		System.out.println(gameOverMessage);
+		//TODO: post death mechanics
+	}
+
+	public void invasion() {
+		inGame = false;
+		gameOverMessage = "Invasion";
+		System.out.println(gameOverMessage);
 		//TODO: post death mechanics
 	}
 

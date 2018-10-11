@@ -5,7 +5,7 @@ import com.austral.spaceinvaders.physics.Velocity;
 
 public class AlienFactory {
 
-	private final static String UFO_IMAGE = "src/images/ufo.png";
+	private final static String UFO_IMAGE = "src/images/alien.png";
 	private final static String SMALL_ALIEN_IMAGE = "src/images/small_alien.png";
 	private final static String MEDIUM_ALIEN_IMAGE = "src/images/medium_alien.png";
 	private final static String LARGE_ALIEN_IMAGE = "src/images/large_alien.png";
@@ -22,8 +22,8 @@ public class AlienFactory {
 		return new Alien(x, y, new Velocity(2, Direction.SOUTH), new Velocity(2, Direction.EAST), 120, new Velocity(4, Direction.SOUTH), 10, LARGE_ALIEN_IMAGE);
 	}
 
-	public static Alien createUFO(int x, int y) {
-		return new Alien(x, y, new Velocity(2, Direction.SOUTH), new Velocity(2, Direction.EAST), 120, new Velocity(4, Direction.SOUTH), 10, UFO_IMAGE);
+	public static Alien createUFO(int x, int y, int randomReward) {
+		return new Alien(x, y, new Velocity(2, Direction.SOUTH), new Velocity(2, Direction.EAST), 120, new Velocity(4, Direction.SOUTH), randomReward, UFO_IMAGE);
 	}
 
 }

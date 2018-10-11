@@ -26,12 +26,16 @@ public class GameEnvironment implements GlobalConfiguration {
 	private ArrayList<Bomb> bombs = new ArrayList<>();
 	private final GameModifierService gameModifierService;
 	private Level currentLevel;
+	private long finishCycleTickAmount;
+	private int randomTimeUFO;
 
 	public GameEnvironment(GameSession gameSession) {
 		this.gameSession = gameSession;
 		this.gameModifierService = new GameModifierService(this);
 		this.gameModifierService.supplyGameModifier(new GodMode());
 		this.player = new Player(playerStartX, playerStartY, 3, 4);
+		this.finishCycleTickAmount = 30;
+		this.randomTimeUFO = 4000;
 	}
 
 	public Player getPlayer() {
@@ -122,7 +126,7 @@ public class GameEnvironment implements GlobalConfiguration {
 		//Aliens have invaded
 		aliens.forEach(alien -> {
 			if (alien.getY() + 20 >= player.getY()) {
-				gameSession.defeat();
+				gameSession.invasion();
 			}
 		});
 
@@ -136,6 +140,15 @@ public class GameEnvironment implements GlobalConfiguration {
 			bombs.remove(hit.getBetaCollider());
 		});
 
+		//spawn UFO
+		if(finishCycleTickAmount%4500 == 0){
+			randomTimeUFO = generateRandomNumberBetween(60, 45) * 100;//lo multiplico por 100 para darle mayor probabilidad de que el resto sea 0
+		}
+
+		if(finishCycleTickAmount%randomTimeUFO == 0){
+			spawnUFO();
+		}
+
 		//Animate sprites for next game tick
 		animateAliens();
 		animateBombs();
@@ -148,6 +161,20 @@ public class GameEnvironment implements GlobalConfiguration {
 		//spawn new alien bombs
 		dropAlienBombs();
 		gameModifierService.ping();
+
+		//add a finish cycle
+		finishCycleTickAmount += 30;
+	}
+
+	private void spawnUFO(){
+		final Random randomGenerator = new Random();
+
+		aliens.add(AlienFactory.createUFO(randomGenerator.nextInt(frameWidth - 120) + 60, 10, generateRandomNumberBetween(300,50)));
+	}
+
+	private int generateRandomNumberBetween(int high, int low){
+		final Random randomGenerator = new Random();
+		return randomGenerator.nextInt(high - low) + low;
 	}
 
 	private void dropAlienBombs() {

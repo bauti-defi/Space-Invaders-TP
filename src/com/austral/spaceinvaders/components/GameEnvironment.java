@@ -141,11 +141,10 @@ public class GameEnvironment implements GlobalConfiguration {
 		});
 
 		//spawn UFO
-		System.out.println(finishCycleTickAmount);
 		if(finishCycleTickAmount%4500 == 0){
 			randomTimeUFO = generateRandomNumberBetween(60, 45) * 100;//lo multiplico por 100 para darle mayor probabilidad de que el resto sea 0
 		}
-		System.out.println("random Time: " + randomTimeUFO);
+
 		if(finishCycleTickAmount%randomTimeUFO == 0){
 			spawnUFO();
 		}

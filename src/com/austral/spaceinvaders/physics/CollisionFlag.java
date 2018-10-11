@@ -1,8 +1,8 @@
 package com.austral.spaceinvaders.physics;
 
-import com.austral.spaceinvaders.models.sprites.Sprite;
+import com.austral.spaceinvaders.models.gameobjects.GameObject;
 
-public class CollisionFlag<T1 extends Sprite, T2 extends Sprite> {
+public class CollisionFlag<T1 extends GameObject, T2 extends GameObject> {
 
 	private final T1 alphaCollider;
 	private final T2 betaCollider;

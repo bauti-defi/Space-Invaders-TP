@@ -3,8 +3,7 @@ package com.austral.spaceinvaders.components;
 import com.austral.spaceinvaders.GlobalConfiguration;
 import com.austral.spaceinvaders.components.views.GameView;
 import com.austral.spaceinvaders.models.GamePlayer;
-import com.austral.spaceinvaders.models.Level;
-import com.austral.spaceinvaders.models.sprites.Sprite;
+import com.austral.spaceinvaders.models.gameobjects.GameObject;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -40,7 +39,6 @@ public class GameSession implements GlobalConfiguration, Runnable {
 		inGame = true;
 		gameView.addKeyListener(gameRemoteAdapter);
 		gameView.requestFocusInWindow();
-		gameEnvironment.initiateLevel(Level.FIRST);
 
 		long renderStartTime;
 		while (inGame) {
@@ -112,15 +110,11 @@ public class GameSession implements GlobalConfiguration, Runnable {
 	}
 
 	public String getActivePowerUpName() {
-		return gameEnvironment.getActivePowerUpName();
+		return gameEnvironment.getActiveGameModifierName();
 	}
 
 	public int getPlayerHealth() {
 		return gameEnvironment.getPlayer().getHealth();
-	}
-
-	public int getPlayerShieldCount() {
-		return gameEnvironment.getPlayer().getShield();
 	}
 
 	public int getCurrentPoints() {
@@ -131,8 +125,8 @@ public class GameSession implements GlobalConfiguration, Runnable {
 		gamePlayer.incrementPoints(points);
 	}
 
-	public List<Sprite> getSprites() {
-		return gameEnvironment.getSprites();
+	public List<GameObject> getGameObjects() {
+		return gameEnvironment.getGameObjects();
 	}
 
 

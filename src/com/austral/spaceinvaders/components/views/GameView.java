@@ -30,7 +30,6 @@ public class GameView extends JPanel implements GlobalConfiguration {
 	private void renderVitals(Graphics g) {
 		g.setColor(Color.WHITE);
 		g.drawString("Vidas: " + gameSession.getPlayerHealth(), 5, frameHeight - 30);
-		g.drawString("Escudos: " + gameSession.getPlayerShieldCount() / 50, frameWidth - 100, frameHeight - 30);
 	}
 
 	private void renderGameModifier(Graphics g) {
@@ -61,7 +60,7 @@ public class GameView extends JPanel implements GlobalConfiguration {
 	}
 
 	public void renderSprites(Graphics g) {
-		gameSession.getSprites().forEach(sprite -> sprite.render(g));
+		gameSession.getGameObjects().forEach(sprite -> sprite.render(g));
 	}
 
 	@Override

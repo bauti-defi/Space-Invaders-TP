@@ -1,6 +1,6 @@
-package com.austral.spaceinvaders.models;
+package com.austral.spaceinvaders.models.gameobjects;
 
-import com.austral.spaceinvaders.models.sprites.Projectile;
+import com.austral.spaceinvaders.models.gameobjects.sprites.Projectile;
 
 public interface Controllable {
 

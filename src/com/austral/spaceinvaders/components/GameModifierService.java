@@ -60,6 +60,13 @@ public class GameModifierService {
 		activationTime = System.currentTimeMillis();
 	}
 
+	public void forceDeactivateModifier() {
+		currentPowerUpDuration = 0;
+		if (currentGameModifier != null) {
+			currentGameModifier.deactivate(gameEnvironment);
+		}
+	}
+
 	public void ping() {
 		if (currentPowerUpDuration > 0) {
 			long difference = System.currentTimeMillis() - activationTime;

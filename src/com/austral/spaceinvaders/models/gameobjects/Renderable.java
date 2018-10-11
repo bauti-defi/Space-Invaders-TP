@@ -1,4 +1,4 @@
-package com.austral.spaceinvaders.models;
+package com.austral.spaceinvaders.models.gameobjects;
 
 import java.awt.*;
 

@@ -11,7 +11,7 @@ public class GodMode implements GameModifier {
 
 	@Override
 	public int probability() {
-		return 20;
+		return 100;
 	}
 
 	@Override

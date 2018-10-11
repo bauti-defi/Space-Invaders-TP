@@ -1,6 +1,6 @@
-package com.austral.spaceinvaders.models.sprites.aliens;
+package com.austral.spaceinvaders.models.gameobjects.sprites.aliens;
 
-import com.austral.spaceinvaders.models.sprites.Projectile;
+import com.austral.spaceinvaders.models.gameobjects.sprites.Projectile;
 import com.austral.spaceinvaders.physics.Velocity;
 
 public class Bomb extends Projectile {

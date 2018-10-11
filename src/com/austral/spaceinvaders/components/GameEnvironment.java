@@ -3,12 +3,14 @@ package com.austral.spaceinvaders.components;
 import com.austral.spaceinvaders.GlobalConfiguration;
 import com.austral.spaceinvaders.components.modifiers.GodMode;
 import com.austral.spaceinvaders.models.Level;
-import com.austral.spaceinvaders.models.sprites.Player;
-import com.austral.spaceinvaders.models.sprites.Shot;
-import com.austral.spaceinvaders.models.sprites.Sprite;
-import com.austral.spaceinvaders.models.sprites.aliens.Alien;
-import com.austral.spaceinvaders.models.sprites.aliens.AlienFactory;
-import com.austral.spaceinvaders.models.sprites.aliens.Bomb;
+import com.austral.spaceinvaders.models.gameobjects.GameObject;
+import com.austral.spaceinvaders.models.gameobjects.Shield;
+import com.austral.spaceinvaders.models.gameobjects.sprites.Player;
+import com.austral.spaceinvaders.models.gameobjects.sprites.Shot;
+import com.austral.spaceinvaders.models.gameobjects.sprites.Sprite;
+import com.austral.spaceinvaders.models.gameobjects.sprites.aliens.Alien;
+import com.austral.spaceinvaders.models.gameobjects.sprites.aliens.AlienFactory;
+import com.austral.spaceinvaders.models.gameobjects.sprites.aliens.Bomb;
 import com.austral.spaceinvaders.physics.CollisionFlag;
 import com.austral.spaceinvaders.physics.Direction;
 import com.austral.spaceinvaders.physics.Velocity;
@@ -21,10 +23,11 @@ import java.util.Random;
 public class GameEnvironment implements GlobalConfiguration {
 
 	private final GameSession gameSession;
-	private final Player player;
+	private Player player;
 	private ArrayList<Alien> aliens = new ArrayList<>();
 	private ArrayList<Shot> shots = new ArrayList<>();
 	private ArrayList<Bomb> bombs = new ArrayList<>();
+	private ArrayList<Shield> shields = new ArrayList<>();
 	private final GameModifierService gameModifierService;
 	private Level currentLevel;
 	private int gameTicksSinceUFOSpawn;
@@ -34,25 +37,40 @@ public class GameEnvironment implements GlobalConfiguration {
 		this.gameSession = gameSession;
 		this.gameModifierService = new GameModifierService(this);
 		this.gameModifierService.supplyGameModifier(new GodMode());
-		this.player = new Player(playerStartX, playerStartY, 3, 4);
-		this.randomTimeUFO = RandomGenerator.getRandomIntBetween(minimumUFOSpawnDelay, maxUFOSPawnDelay) * 1000;
+		initiateLevel(Level.FIRST);
 	}
 
 	public Player getPlayer() {
 		return player;
 	}
 
-	private void disposeLevel() {
+	private void reset() {
 		this.aliens.clear();
 		this.shots.clear();
 		this.bombs.clear();
+		this.gameModifierService.forceDeactivateModifier();
+		this.randomTimeUFO = RandomGenerator.getRandomIntBetween(minimumUFOSpawnDelay, maxUFOSPawnDelay) * 1000;
 	}
 
-	void initiateLevel(Level level) {
-		disposeLevel();
+	public void initiateLevel(Level level) {
+		reset();
 		this.currentLevel = level;
-		for (int alienCount = 0; alienCount < level.getAlienCount(); alienCount++) {
-			aliens.add(AlienFactory.createSmall(RandomGenerator.getRandomIntBetween(60, frameWidth - 120), 10));
+		this.player = new Player(playerStartX, playerStartY, level.getInitialLiveCount());
+		spawnAliens(level.getAlienCount(), level.getAlienDifficultyMultiplier());
+		spawnShields(level.getInitialShieldCount());
+	}
+
+	private void spawnShields(int shieldCount) {
+		for (int count = 0; count < shieldCount; ++count) {
+			shields.add(new Shield((frameWidth / shieldCount) * count, frameHeight - 150, shieldHealth));
+		}
+	}
+
+	private void spawnAliens(int alienCount, int difficultyMultiplier) {
+		for (int count = 0; count < alienCount; count++) {
+			aliens.add(AlienFactory.createSmall(RandomGenerator.getRandomIntBetween(60, frameWidth - 120), 10, difficultyMultiplier));
+			aliens.add(AlienFactory.createMedium(RandomGenerator.getRandomIntBetween(60, frameWidth - 120), 10, difficultyMultiplier));
+			aliens.add(AlienFactory.createLarge(RandomGenerator.getRandomIntBetween(60, frameWidth - 120), 10, difficultyMultiplier));
 		}
 	}
 
@@ -76,7 +94,7 @@ public class GameEnvironment implements GlobalConfiguration {
 	private void animateAliens() {
 		aliens.forEach(alien -> {
 			alien.animate();
-			if (!isSpriteOnScreen(alien)) {
+			if (!isGameObjectOnScreen(alien)) {
 				flipVelocityDirection(alien.getxVelocity());
 			}
 		});
@@ -84,16 +102,16 @@ public class GameEnvironment implements GlobalConfiguration {
 
 	private void animateShots() {
 		shots.forEach(Sprite::animate);
-		shots.removeIf(shot -> !isSpriteOnScreen(shot));
+		shots.removeIf(shot -> !isGameObjectOnScreen(shot));
 	}
 
 	private void animateBombs() {
 		bombs.forEach(Sprite::animate);
-		bombs.removeIf(bomb -> !isSpriteOnScreen(bomb));
+		bombs.removeIf(bomb -> !isGameObjectOnScreen(bomb));
 	}
 
-	private boolean isSpriteOnScreen(Sprite sprite) {
-		return isRectangleOnScreen(sprite.getCollisionBox());
+	private boolean isGameObjectOnScreen(GameObject gameObject) {
+		return isRectangleOnScreen(gameObject.getCollisionBox());
 	}
 
 	private boolean isRectangleOnScreen(Rectangle rectangle) {
@@ -137,6 +155,15 @@ public class GameEnvironment implements GlobalConfiguration {
 				gameSession.defeat();
 			}
 			bombs.remove(hit.getBetaCollider());
+		});
+
+		//Delete all shield and bomb collision flags
+		//Shields take damage/de-spawn
+		getShieldCollisions().forEach(hit -> {
+			hit.getAlphaCollider().takeDamage(hit.getBetaCollider().getDamage());
+			if (hit.getAlphaCollider().isDestroyed()) {
+				shields.remove(hit.getAlphaCollider());
+			}
 		});
 
 		//Spawn UFO
@@ -200,8 +227,19 @@ public class GameEnvironment implements GlobalConfiguration {
 		return hits;
 	}
 
-	public String getActivePowerUpName() {
-		return gameModifierService.getActiveGameModifier();
+	private ArrayList<CollisionFlag<Shield, Bomb>> getShieldCollisions() {
+		final ArrayList<CollisionFlag<Shield, Bomb>> hits = new ArrayList<>();
+
+		//collisionFlags between bombs and shields
+		bombs.forEach(bomb -> {
+			shields.forEach(shield -> {
+				if (bomb.collided(shield)) {
+					hits.add(new CollisionFlag<>(shield, bomb));
+				}
+			});
+		});
+
+		return hits;
 	}
 
 	private ArrayList<CollisionFlag<Player, Bomb>> getPlayerCollisions() {
@@ -233,12 +271,17 @@ public class GameEnvironment implements GlobalConfiguration {
 		shots.add(player.fire());
 	}
 
-	public ArrayList<Sprite> getSprites() {
-		final ArrayList<Sprite> spriteList = new ArrayList<>();
-		spriteList.addAll(aliens);
-		spriteList.addAll(bombs);
-		spriteList.addAll(shots);
-		spriteList.add(player);
-		return spriteList;
+	public String getActiveGameModifierName() {
+		return gameModifierService.getActiveGameModifier();
+	}
+
+	public ArrayList<GameObject> getGameObjects() {
+		final ArrayList<GameObject> objectList = new ArrayList<>();
+		objectList.addAll(aliens);
+		objectList.addAll(bombs);
+		objectList.addAll(shots);
+		objectList.addAll(shields);
+		objectList.add(player);
+		return objectList;
 	}
 }

@@ -1,4 +1,4 @@
-package com.austral.spaceinvaders.models.sprites;
+package com.austral.spaceinvaders.models.gameobjects.sprites;
 
 import com.austral.spaceinvaders.physics.Direction;
 import com.austral.spaceinvaders.physics.Velocity;

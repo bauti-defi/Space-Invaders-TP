@@ -1,6 +1,6 @@
-package com.austral.spaceinvaders.models.sprites.aliens;
+package com.austral.spaceinvaders.models.gameobjects.sprites.aliens;
 
-import com.austral.spaceinvaders.models.sprites.Character;
+import com.austral.spaceinvaders.models.gameobjects.sprites.Character;
 import com.austral.spaceinvaders.physics.Velocity;
 
 public class Alien extends Character {

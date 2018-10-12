@@ -116,7 +116,7 @@ public class GameEnvironment implements GlobalConfiguration {
 
 	private boolean isValidPlayerMove() {
 		final Rectangle playerCollisionBox = player.getCollisionBox();
-		playerCollisionBox.translate(player.getxVelocity().getVectorially(), 0);
+		playerCollisionBox.translate(player.getxVelocity().getVector(), 0);
 		return isRectangleOnScreen(playerCollisionBox);
 	}
 

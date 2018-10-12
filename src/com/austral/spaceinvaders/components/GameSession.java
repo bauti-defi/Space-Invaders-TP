@@ -53,7 +53,7 @@ public class GameSession implements GlobalConfiguration, Runnable {
 			try {
 				Thread.sleep(getGameTickWithLagCompensation(renderStartTime));
 			} catch (InterruptedException e) {
-				System.out.println("interrupted");
+				System.out.println("Error in game loop.");
 			}
 		}
 	}

@@ -37,10 +37,10 @@ public abstract class Sprite extends GameObject {
 
 	public void animate() {
 		if (xVelocity.isSignificant()) {
-			this.x += xVelocity.getVectorially();
+			this.x += xVelocity.getVector();
 		}
 		if (yVelocity.isSignificant()) {
-			this.y += yVelocity.getVectorially();
+			this.y += yVelocity.getVector();
 		}
 	}
 }

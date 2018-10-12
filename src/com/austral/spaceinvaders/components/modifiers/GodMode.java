@@ -2,16 +2,10 @@ package com.austral.spaceinvaders.components.modifiers;
 
 import com.austral.spaceinvaders.components.GameEnvironment;
 
-public class GodMode implements GameModifier {
+public class GodMode extends GameModifier {
 
-	@Override
-	public String name() {
-		return "God Mode";
-	}
-
-	@Override
-	public int probability() {
-		return 100;
+	public GodMode() {
+		super("God Mode");
 	}
 
 	@Override
@@ -22,5 +16,10 @@ public class GodMode implements GameModifier {
 	@Override
 	public void deactivate(final GameEnvironment gameEnvironment) {
 		gameEnvironment.getPlayer().makeMortal();
+	}
+
+	@Override
+	public int getPercentProbability() {
+		return 20;
 	}
 }

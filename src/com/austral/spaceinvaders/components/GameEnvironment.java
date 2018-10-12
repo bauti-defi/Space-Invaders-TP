@@ -1,7 +1,6 @@
 package com.austral.spaceinvaders.components;
 
 import com.austral.spaceinvaders.GlobalConfiguration;
-import com.austral.spaceinvaders.components.modifiers.GodMode;
 import com.austral.spaceinvaders.models.Level;
 import com.austral.spaceinvaders.models.gameobjects.GameObject;
 import com.austral.spaceinvaders.models.gameobjects.Shield;
@@ -18,7 +17,6 @@ import com.austral.spaceinvaders.util.RandomGenerator;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class GameEnvironment implements GlobalConfiguration {
 
@@ -36,7 +34,6 @@ public class GameEnvironment implements GlobalConfiguration {
 	public GameEnvironment(GameSession gameSession) {
 		this.gameSession = gameSession;
 		this.gameModifierService = new GameModifierService(this);
-		this.gameModifierService.supplyGameModifier(new GodMode());
 		initiateLevel(Level.FIRST);
 	}
 
@@ -195,8 +192,7 @@ public class GameEnvironment implements GlobalConfiguration {
 	}
 
 	private void dropAlienBombs() {
-		final Random randomGenerator = new Random();
-		int[] randoms = randomGenerator.ints(aliens.size(), 0, 201).toArray();
+		int[] randoms = RandomGenerator.getRandomIntStream(aliens.size(), 0, 201).toArray();
 		for (int alienIndex = 0; alienIndex < aliens.size(); alienIndex++) {
 			if (randoms[alienIndex] == 200) {
 				bombs.add(aliens.get(alienIndex).fire());
@@ -214,7 +210,7 @@ public class GameEnvironment implements GlobalConfiguration {
 			for (Alien alien : aliens) {
 				if (alien.collided(shot)) {
 					hits.add(new CollisionFlag<>(alien, shot));
-					if (!gameModifierService.isGameModifierActive() && ++consecutiveHits >= 4) {
+					if (!gameModifierService.isGameModifierActive() && ++consecutiveHits >= consecutiveHitsForModifier) {
 						gameModifierService.activateModifier();
 					}
 				}

@@ -1,14 +1,22 @@
 package com.austral.spaceinvaders.components.modifiers;
 
 import com.austral.spaceinvaders.components.GameEnvironment;
+import com.austral.spaceinvaders.util.Distributable;
 
-public interface GameModifier {
+public abstract class GameModifier implements Distributable {
 
-	String name();
+	private final String name;
 
-	int probability();
+	public GameModifier(String name) {
+		this.name = name;
+	}
 
-	void activate(GameEnvironment gameEnvironment);
+	public String getName() {
+		return name;
+	}
 
-	void deactivate(GameEnvironment gameEnvironment);
+	public abstract void activate(GameEnvironment gameEnvironment);
+
+	public abstract void deactivate(GameEnvironment gameEnvironment);
+
 }

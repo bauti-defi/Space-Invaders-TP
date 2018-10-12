@@ -57,8 +57,8 @@ public class GameView extends JPanel implements GlobalConfiguration {
 		g.drawString(gameSession.getGameOverMessage(), (frameWidth - metr.stringWidth(gameSession.getGameOverMessage())) / 2, frameWidth / 2);
 	}
 
-	public void renderSprites(Graphics g) {
-		gameSession.getGameObjects().forEach(sprite -> sprite.render(g));
+	public void renderGameObjects(Graphics g) {
+		gameSession.getGameObjects().forEach(gameObject -> gameObject.render(g));
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class GameView extends JPanel implements GlobalConfiguration {
 			renderVitals(g);
 			renderGround(g);
 			renderGameModifier(g);
-			renderSprites(g);
+			renderGameObjects(g);
 		} else {
 			renderGameOver(g);
 		}

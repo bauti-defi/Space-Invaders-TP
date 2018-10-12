@@ -27,7 +27,6 @@ public class GameEnvironment implements GlobalConfiguration {
 	private ArrayList<Bomb> bombs = new ArrayList<>();
 	private ArrayList<Shield> shields = new ArrayList<>();
 	private final GameModifierService gameModifierService;
-	private Level currentLevel;
 	private int gameTicksSinceUFOSpawn;
 	private long randomTimeUFO;
 
@@ -42,16 +41,16 @@ public class GameEnvironment implements GlobalConfiguration {
 	}
 
 	private void reset() {
-		this.aliens.clear();
-		this.shots.clear();
-		this.bombs.clear();
-		this.gameModifierService.forceDeactivateModifier();
-		this.randomTimeUFO = RandomGenerator.getRandomIntBetween(minimumUFOSpawnDelay, maxUFOSPawnDelay) * 1000;
+		aliens.clear();
+		shots.clear();
+		shields.clear();
+		bombs.clear();
+		gameModifierService.forceDeactivateModifier();
+		randomTimeUFO = RandomGenerator.getRandomIntBetween(minimumUFOSpawnDelay, maxUFOSPawnDelay) * 1000;
 	}
 
 	public void initiateLevel(Level level) {
 		reset();
-		this.currentLevel = level;
 		this.player = new Player(playerStartX, playerStartY, level.getInitialLiveCount());
 		spawnAliens(level.getAlienCount(), level.getAlienDifficultyMultiplier());
 		spawnShields(level.getInitialShieldCount());

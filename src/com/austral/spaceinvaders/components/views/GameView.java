@@ -22,27 +22,25 @@ public class GameView extends JPanel implements GlobalConfiguration {
 		g.drawLine(0, groundY, frameWidth, groundY);
 	}
 
-	private void renderScoreBoard(Graphics g) {
+	private void renderScore(Graphics g) {
 		g.setColor(Color.WHITE);
-		g.drawString("Puntos: " + gameSession.getCurrentPoints(), 0, 15);
+		g.drawString("Puntos: " + gameSession.getCurrentPoints(), 10, 15);
 	}
 
 	private void renderVitals(Graphics g) {
 		g.setColor(Color.WHITE);
-		g.drawString("Vidas: " + gameSession.getPlayerHealth(), 5, frameHeight - 30);
+		g.drawString("Vidas: " + gameSession.getPlayerHealth(), frameWidth - 60, 15);
 	}
 
 	private void renderGameModifier(Graphics g) {
-		final String powerUpName = gameSession.getActivePowerUpName();
-		if (powerUpName.length() > 0) {
+		final String gameModifierName = gameSession.getActiveGameModifierName();
+		if (gameModifierName.length() > 0) {
 			g.setColor(Color.RED);
-			g.drawString(powerUpName, (frameWidth / 2) - powerUpName.length(), 50);
+			g.drawString(gameModifierName, (frameWidth / 2) - gameModifierName.length(), 50);
 		}
 	}
 
-	public void renderGameOver(String message){
-		Graphics g = this.getGraphics();
-
+	private void renderGameOver(Graphics g) {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, frameWidth, frameHeight);
 
@@ -56,7 +54,7 @@ public class GameView extends JPanel implements GlobalConfiguration {
 
 		g.setColor(Color.white);
 		g.setFont(small);
-		g.drawString(message, (frameWidth - metr.stringWidth(message)) / 2, frameWidth / 2);
+		g.drawString(gameSession.getGameOverMessage(), (frameWidth - metr.stringWidth(gameSession.getGameOverMessage())) / 2, frameWidth / 2);
 	}
 
 	public void renderSprites(Graphics g) {
@@ -66,11 +64,16 @@ public class GameView extends JPanel implements GlobalConfiguration {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		renderScoreBoard(g);
-		renderVitals(g);
-		renderGround(g);
-		renderGameModifier(g);
-		renderSprites(g);
+
+		if (gameSession.inGame()) {
+			renderScore(g);
+			renderVitals(g);
+			renderGround(g);
+			renderGameModifier(g);
+			renderSprites(g);
+		} else {
+			renderGameOver(g);
+		}
 	}
 
 }

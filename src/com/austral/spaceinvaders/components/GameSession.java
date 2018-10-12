@@ -3,6 +3,7 @@ package com.austral.spaceinvaders.components;
 import com.austral.spaceinvaders.GlobalConfiguration;
 import com.austral.spaceinvaders.components.views.GameView;
 import com.austral.spaceinvaders.models.GamePlayer;
+import com.austral.spaceinvaders.models.Level;
 import com.austral.spaceinvaders.models.gameobjects.GameObject;
 
 import java.awt.*;
@@ -16,6 +17,7 @@ public class GameSession implements GlobalConfiguration, Runnable {
 	private final GameView gameView;
 	private final GamePlayer gamePlayer;
 	private boolean inGame;
+	private Level currentLevel;
 	private String gameOverMessage;
 
 
@@ -24,6 +26,7 @@ public class GameSession implements GlobalConfiguration, Runnable {
 		this.gameEnvironment = new GameEnvironment(this);
 		this.gameRemoteAdapter = new GameRemoteAdapter(this);
 		this.gameView = new GameView(this);
+		this.currentLevel = Level.FIRST;
 	}
 
 	public Rectangle getGameViewRectangle() {
@@ -50,11 +53,9 @@ public class GameSession implements GlobalConfiguration, Runnable {
 			try {
 				Thread.sleep(getGameTickWithLagCompensation(renderStartTime));
 			} catch (InterruptedException e) {
-				System.out.println("interrupted");
+				System.out.println("Error in game loop.");
 			}
 		}
-
-		gameView.renderGameOver(gameOverMessage);
 	}
 
 	public void quit() {
@@ -62,23 +63,40 @@ public class GameSession implements GlobalConfiguration, Runnable {
 	}
 
 	public void victory() {
-		inGame = false;
-		gameOverMessage = "Victory";
-		System.out.println(gameOverMessage);
+		switch (currentLevel) {
+			case FIRST:
+				gameEnvironment.initiateLevel(Level.SECOND);
+				break;
+			case SECOND:
+				gameEnvironment.initiateLevel(Level.THIRD);
+				break;
+			case THIRD:
+				gameEnvironment.initiateLevel(Level.FOURTH);
+				break;
+			case FOURTH:
+				gameEnvironment.initiateLevel(Level.FIFTH);
+				break;
+			case FIFTH:
+				inGame = false;
+				gameOverMessage = "Victory";
+				//TODO: saving
+				break;
+
+		}
 	}
 
 	public void defeat() {
 		inGame = false;
 		gameOverMessage = "Defeat";
 		System.out.println(gameOverMessage);
-		//TODO: post death mechanics
+		//TODO: post death mechanics (saving)
 	}
 
 	public void invasion() {
 		inGame = false;
 		gameOverMessage = "Invasion";
 		System.out.println(gameOverMessage);
-		//TODO: post death mechanics
+		//TODO: post death mechanics (saving)
 	}
 
 	private long getGameTickWithLagCompensation(long renderStartTime) {
@@ -97,6 +115,9 @@ public class GameSession implements GlobalConfiguration, Runnable {
 			case KeyEvent.VK_SPACE:
 				gameEnvironment.notifySpaceBarPressed();
 				break;
+			case KeyEvent.VK_ESCAPE:
+				quit();
+				break;
 		}
 	}
 
@@ -109,7 +130,7 @@ public class GameSession implements GlobalConfiguration, Runnable {
 		}
 	}
 
-	public String getActivePowerUpName() {
+	public String getActiveGameModifierName() {
 		return gameEnvironment.getActiveGameModifierName();
 	}
 
@@ -123,6 +144,14 @@ public class GameSession implements GlobalConfiguration, Runnable {
 
 	public void awardPoints(int points) {
 		gamePlayer.incrementPoints(points);
+	}
+
+	public boolean inGame() {
+		return inGame;
+	}
+
+	public String getGameOverMessage() {
+		return gameOverMessage;
 	}
 
 	public List<GameObject> getGameObjects() {

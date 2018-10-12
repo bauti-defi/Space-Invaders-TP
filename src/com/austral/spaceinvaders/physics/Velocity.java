@@ -34,7 +34,7 @@ public class Velocity {
 		return magnitude != 0;
 	}
 
-	public int getVectorially() {
+	public int getVector() {
 		return (direction == Direction.NORTH || direction == Direction.WEST) ? magnitude * -1 : magnitude;
 	}
 }

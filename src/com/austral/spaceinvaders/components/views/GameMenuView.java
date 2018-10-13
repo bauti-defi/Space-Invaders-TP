@@ -10,22 +10,32 @@ public class GameMenuView extends JPanel {
 	private final JButton play, leaderboard;
 
 	public GameMenuView(GameFrame gameFrame) {
-		setLayout(new BorderLayout());
+		setLayout(null);
+		setBackground(Color.BLACK);
 
 		this.play = new JButton("Jugar");
 		this.play.addActionListener((e) -> {
 			gameFrame.play();
 		});
-		add(play, BorderLayout.PAGE_START);
+		play.setBounds(45,100,300,100);
+		play.setBackground(Color.ORANGE);
+		play.setFont(new Font("Arial", Font.BOLD, 30));
+		add(play);
 
 		JLabel titleLabel = new JLabel("SPACE INVADERS");
-		add(titleLabel, BorderLayout.CENTER);
+		titleLabel.setBounds(60, 250, 300 ,100);
+		titleLabel.setForeground(Color.WHITE);
+		titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
+		add(titleLabel);
 
 		this.leaderboard = new JButton("Leaderboard");
 		this.leaderboard.addActionListener((e) -> {
 			gameFrame.showLeaderboard();
 		});
-		add(leaderboard, BorderLayout.SOUTH);
+		leaderboard.setBounds(45,400,300,100);
+		leaderboard.setBackground(Color.ORANGE);
+		leaderboard.setFont(new Font("Arial", Font.BOLD, 30));
+		add(leaderboard);
 	}
 
 }

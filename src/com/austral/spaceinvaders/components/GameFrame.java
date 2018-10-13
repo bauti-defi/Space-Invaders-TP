@@ -24,11 +24,11 @@ public class GameFrame extends JFrame implements GlobalConfiguration {
 		this.localPlayer = localPlayer;
 		currentView = this.gameMenuView = new GameMenuView(this);
 		add(gameMenuView, BorderLayout.CENTER);
-		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(150, 150);
+		setSize(frameWidth, frameHeight);
 		setResizable(false);
 		setVisible(true);
+		setLocationRelativeTo(null);
 	}
 
 	private <T extends JPanel> void setView(T view) {

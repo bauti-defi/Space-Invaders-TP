@@ -58,7 +58,7 @@ public class GameEnvironment implements GlobalConfiguration {
 
 	private void spawnShields(int shieldCount) {
 		for (int count = 0; count < shieldCount; ++count) {
-			shields.add(new Shield((frameWidth / shieldCount) * count, frameHeight - 150, shieldHealth));
+			shields.add(new Shield((frameWidth - 330) * (count + 1), frameHeight - 150, shieldHealth));
 		}
 	}
 
@@ -160,6 +160,7 @@ public class GameEnvironment implements GlobalConfiguration {
 			if (hit.getAlphaCollider().isDestroyed()) {
 				shields.remove(hit.getAlphaCollider());
 			}
+			bombs.remove(hit.getBetaCollider());
 		});
 
 		//Spawn UFO

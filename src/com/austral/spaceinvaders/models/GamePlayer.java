@@ -20,4 +20,8 @@ public abstract class GamePlayer {
 		this.points += points;
 	}
 
+	public PlayerHiscore getHiscore() {
+		return new PlayerHiscore(name, points);
+	}
+
 }

@@ -2,10 +2,10 @@ package com.austral.spaceinvaders.components;
 
 import com.austral.spaceinvaders.GlobalConfiguration;
 import com.austral.spaceinvaders.components.views.GameView;
-import com.austral.spaceinvaders.models.GamePlayer;
 import com.austral.spaceinvaders.models.Level;
 import com.austral.spaceinvaders.models.gameobjects.GameObject;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
@@ -16,25 +16,25 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 	private final GameEngine gameEngine;
 	private final GameRemoteAdapter gameRemoteAdapter;
 	private final GameView gameView;
-	private final GamePlayer gamePlayer;
+	private final GameSession gameSession;
 	private boolean inGame;
 	private Level currentLevel;
 	private String gameOverMessage;
 
 
-	public GameEnvironment(final GamePlayer gamePlayer) {
-		this.gamePlayer = gamePlayer;
+	public GameEnvironment(final GameSession gameSession) {
+		this.gameSession = gameSession;
 		this.gameEngine = new GameEngine(this);
 		this.gameRemoteAdapter = new GameRemoteAdapter(this);
 		this.gameView = new GameView(this);
 		this.currentLevel = Level.FIRST;
 	}
 
-	public Rectangle getGameViewRectangle() {
-		return new Rectangle(0, 0, gameView.getWidth(), gameView.getHeight());
+	public boolean isRectangleOnScreen(Rectangle rectangle) {
+		return gameView.getViewRectangle().contains(rectangle);
 	}
 
-	public GameView getGameView() {
+	public JPanel getView() {
 		return gameView;
 	}
 
@@ -54,13 +54,14 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 			try {
 				Thread.sleep(getGameTickWithLagCompensation(renderStartTime));
 			} catch (InterruptedException e) {
-				System.out.println("Error in game loop.");
+				System.out.println("Game loop interrupted.");
 			}
 		}
 	}
 
-	public void quit() {
+	private void quit() {
 		inGame = false;
+		gameSession.quitGame();
 	}
 
 	public void victory() {
@@ -140,11 +141,11 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 	}
 
 	public int getCurrentPoints() {
-		return gamePlayer.getPoints();
+		return gameSession.getCurrentPoints();
 	}
 
 	public void awardPoints(int points) {
-		gamePlayer.incrementPoints(points);
+		gameSession.awardPoints(points);
 	}
 
 	public boolean inGame() {

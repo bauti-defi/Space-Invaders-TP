@@ -8,6 +8,7 @@ import java.awt.*;
 
 public class GameView extends JPanel implements GlobalConfiguration {
 
+	private final Image heartImage = new ImageIcon("src/images/heart.png").getImage();
 	private final GameEnvironment gameEnvironment;
 
 	public GameView(GameEnvironment gameEnvironment) {
@@ -17,6 +18,10 @@ public class GameView extends JPanel implements GlobalConfiguration {
 		setDoubleBuffered(true);
 	}
 
+	public Rectangle getViewRectangle() {
+		return new Rectangle(0, 0, getWidth(), getHeight());
+	}
+
 	private void renderGround(Graphics g) {
 		g.setColor(Color.GREEN);
 		g.drawLine(0, groundY, frameWidth, groundY);
@@ -24,12 +29,14 @@ public class GameView extends JPanel implements GlobalConfiguration {
 
 	private void renderScore(Graphics g) {
 		g.setColor(Color.WHITE);
-		g.drawString("Puntos: " + gameEnvironment.getCurrentPoints(), 10, 15);
+		g.drawString("Puntos: " + gameEnvironment.getCurrentPoints(), 5, 15);
 	}
 
 	private void renderVitals(Graphics g) {
 		g.setColor(Color.WHITE);
-		g.drawString("Vidas: " + gameEnvironment.getPlayerHealth(), frameWidth - 60, 15);
+		for (int lives = 0; lives < gameEnvironment.getPlayerHealth(); lives++) {
+			g.drawImage(heartImage, frameWidth - 50 + (15 * lives), 5, this);
+		}
 	}
 
 	private void renderGameModifier(Graphics g) {

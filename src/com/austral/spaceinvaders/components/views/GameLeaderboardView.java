@@ -12,13 +12,14 @@ public class GameLeaderboardView extends JPanel {
 	private final JButton back;
 
 
-	public GameLeaderboardView(GameFrame gameFrame, GamePlayer[] gamePlayers) {
+	public GameLeaderboardView(GameFrame gameFrame) {
 		setLayout(new BorderLayout());
+		setBackground(Color.BLACK);
 
 		JLabel title = new JLabel("Leaderboard");
 		add(title, BorderLayout.PAGE_START);
 
-		this.leaderboard = new JList<>(gamePlayers);
+		this.leaderboard = new JList<>();
 		JScrollPane scrollPane = new JScrollPane(leaderboard);
 		add(scrollPane, BorderLayout.CENTER);
 

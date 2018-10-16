@@ -108,17 +108,13 @@ public class GameEngine implements GlobalConfiguration {
 	}
 
 	private boolean isGameObjectOnScreen(GameObject gameObject) {
-		return isRectangleOnScreen(gameObject.getCollisionBox());
-	}
-
-	private boolean isRectangleOnScreen(Rectangle rectangle) {
-		return gameEnvironment.getGameViewRectangle().contains(rectangle);
+		return gameEnvironment.isRectangleOnScreen(gameObject.getCollisionBox());
 	}
 
 	private boolean isValidPlayerMove() {
 		final Rectangle playerCollisionBox = player.getCollisionBox();
 		playerCollisionBox.translate(player.getxVelocity().getVector(), 0);
-		return isRectangleOnScreen(playerCollisionBox);
+		return gameEnvironment.isRectangleOnScreen(playerCollisionBox);
 	}
 
 	public void executeNextAnimationCycle() {
@@ -193,9 +189,9 @@ public class GameEngine implements GlobalConfiguration {
 	}
 
 	private void dropAlienBombs() {
-		int[] randoms = RandomGenerator.getRandomIntStream(aliens.size(), 0, 201).toArray();
+		int[] randoms = RandomGenerator.getRandomIntStream(aliens.size(), 0, 71).toArray();
 		for (int alienIndex = 0; alienIndex < aliens.size(); alienIndex++) {
-			if (randoms[alienIndex] == 200) {
+			if (randoms[alienIndex] == 70) {
 				bombs.add(aliens.get(alienIndex).fire());
 			}
 		}

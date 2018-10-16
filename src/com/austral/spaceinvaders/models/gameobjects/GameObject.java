@@ -11,7 +11,7 @@ public abstract class GameObject implements Renderable, Collidable {
 	protected int y;
 	protected int height;
 	protected int width;
-	protected final Image image;
+	protected Image image;
 	protected boolean visible;
 
 	public GameObject(final int x, final int y, final String imagePath, final boolean visible) {
@@ -43,6 +43,12 @@ public abstract class GameObject implements Renderable, Collidable {
 
 	public int getWidth() {
 		return width;
+	}
+
+	public void updateImage(String imagePath) {
+		this.image = new ImageIcon(imagePath).getImage();
+		this.height = image.getHeight(null);
+		this.width = image.getWidth(null);
 	}
 
 	public Image getImage() {

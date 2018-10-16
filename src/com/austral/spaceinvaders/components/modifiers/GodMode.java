@@ -1,6 +1,6 @@
 package com.austral.spaceinvaders.components.modifiers;
 
-import com.austral.spaceinvaders.components.GameEnvironment;
+import com.austral.spaceinvaders.components.GameEngine;
 
 public class GodMode extends GameModifier {
 
@@ -9,13 +9,13 @@ public class GodMode extends GameModifier {
 	}
 
 	@Override
-	public void activate(final GameEnvironment gameEnvironment) {
-		gameEnvironment.getPlayer().makeImmune();
+	public void activate(final GameEngine gameEngine) {
+		gameEngine.getPlayer().makeImmune();
 	}
 
 	@Override
-	public void deactivate(final GameEnvironment gameEnvironment) {
-		gameEnvironment.getPlayer().makeMortal();
+	public void deactivate(final GameEngine gameEngine) {
+		gameEngine.getPlayer().makeMortal();
 	}
 
 	@Override

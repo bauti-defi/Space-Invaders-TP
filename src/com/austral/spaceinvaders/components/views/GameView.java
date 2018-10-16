@@ -1,17 +1,17 @@
 package com.austral.spaceinvaders.components.views;
 
 import com.austral.spaceinvaders.GlobalConfiguration;
-import com.austral.spaceinvaders.components.GameSession;
+import com.austral.spaceinvaders.components.GameEnvironment;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class GameView extends JPanel implements GlobalConfiguration {
 
-	private final GameSession gameSession;
+	private final GameEnvironment gameEnvironment;
 
-	public GameView(GameSession gameSession) {
-		this.gameSession = gameSession;
+	public GameView(GameEnvironment gameEnvironment) {
+		this.gameEnvironment = gameEnvironment;
 		setFocusable(true);
 		setBackground(Color.BLACK);
 		setDoubleBuffered(true);
@@ -24,16 +24,16 @@ public class GameView extends JPanel implements GlobalConfiguration {
 
 	private void renderScore(Graphics g) {
 		g.setColor(Color.WHITE);
-		g.drawString("Puntos: " + gameSession.getCurrentPoints(), 10, 15);
+		g.drawString("Puntos: " + gameEnvironment.getCurrentPoints(), 10, 15);
 	}
 
 	private void renderVitals(Graphics g) {
 		g.setColor(Color.WHITE);
-		g.drawString("Vidas: " + gameSession.getPlayerHealth(), frameWidth - 60, 15);
+		g.drawString("Vidas: " + gameEnvironment.getPlayerHealth(), frameWidth - 60, 15);
 	}
 
 	private void renderGameModifier(Graphics g) {
-		final String gameModifierName = gameSession.getActiveGameModifierName();
+		final String gameModifierName = gameEnvironment.getActiveGameModifierName();
 		if (gameModifierName.length() > 0) {
 			g.setColor(Color.RED);
 			g.drawString(gameModifierName, (frameWidth / 2) - gameModifierName.length(), 50);
@@ -54,18 +54,18 @@ public class GameView extends JPanel implements GlobalConfiguration {
 
 		g.setColor(Color.white);
 		g.setFont(small);
-		g.drawString(gameSession.getGameOverMessage(), (frameWidth - metr.stringWidth(gameSession.getGameOverMessage())) / 2, frameWidth / 2);
+		g.drawString(gameEnvironment.getGameOverMessage(), (frameWidth - metr.stringWidth(gameEnvironment.getGameOverMessage())) / 2, frameWidth / 2);
 	}
 
 	public void renderGameObjects(Graphics g) {
-		gameSession.getGameObjects().forEach(gameObject -> gameObject.render(g));
+		gameEnvironment.getGameObjects().forEach(gameObject -> gameObject.render(g));
 	}
 
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		if (gameSession.inGame()) {
+		if (gameEnvironment.inGame()) {
 			renderScore(g);
 			renderVitals(g);
 			renderGround(g);

@@ -7,15 +7,15 @@ import com.austral.spaceinvaders.util.RandomGenerator;
 
 public class GameModifierService {
 
-	private final GameEnvironment gameEnvironment;
+	private final GameEngine gameEngine;
 	private final DistributionList<GameModifier> gameModifierDistributionList = new DistributionList<>(new GodMode());
 
 	private GameModifier currentGameModifier;
 	private int currentModifierDuration;
 	private long activationTime;
 
-	public GameModifierService(GameEnvironment gameEnvironment) {
-		this.gameEnvironment = gameEnvironment;
+	public GameModifierService(GameEngine gameEngine) {
+		this.gameEngine = gameEngine;
 	}
 
 	public boolean isGameModifierActive() {
@@ -35,7 +35,7 @@ public class GameModifierService {
 
 	public void activateModifier() {
 		currentGameModifier = getNewGameModifier();
-		currentGameModifier.activate(gameEnvironment);
+		currentGameModifier.activate(gameEngine);
 		currentModifierDuration = RandomGenerator.getRandomIntBetween(3000, 5000);
 		activationTime = System.currentTimeMillis();
 	}
@@ -43,7 +43,7 @@ public class GameModifierService {
 	public void forceDeactivateModifier() {
 		currentModifierDuration = 0;
 		if (currentGameModifier != null) {
-			currentGameModifier.deactivate(gameEnvironment);
+			currentGameModifier.deactivate(gameEngine);
 		}
 	}
 
@@ -51,7 +51,7 @@ public class GameModifierService {
 		if (currentModifierDuration > 0) {
 			long elapsedTime = System.currentTimeMillis() - activationTime;
 			if (currentModifierDuration <= elapsedTime) {
-				currentGameModifier.deactivate(gameEnvironment);
+				currentGameModifier.deactivate(gameEngine);
 				currentModifierDuration = 0;
 			}
 		}

@@ -5,19 +5,19 @@ import java.awt.event.KeyEvent;
 
 public class GameRemoteAdapter extends KeyAdapter {
 
-	private final GameSession gameSession;
+	private final GameEnvironment gameEnvironment;
 
-	public GameRemoteAdapter(GameSession gameSession) {
-		this.gameSession = gameSession;
+	public GameRemoteAdapter(GameEnvironment gameEnvironment) {
+		this.gameEnvironment = gameEnvironment;
 	}
 
 	@Override
 	public void keyPressed(final KeyEvent e) {
-		gameSession.notifyKeyPressed(e);
+		gameEnvironment.notifyKeyPressed(e);
 	}
 
 	@Override
 	public void keyReleased(final KeyEvent e) {
-		gameSession.notifyKeyReleased(e);
+		gameEnvironment.notifyKeyReleased(e);
 	}
 }

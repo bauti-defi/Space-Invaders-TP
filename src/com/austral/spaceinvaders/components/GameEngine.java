@@ -189,9 +189,9 @@ public class GameEngine implements GlobalConfiguration {
 	}
 
 	private void dropAlienBombs() {
-		int[] randoms = RandomGenerator.getRandomIntStream(aliens.size(), 0, 201).toArray();
+		int[] randoms = RandomGenerator.getRandomIntStream(aliens.size(), 0, 101).toArray();
 		for (int alienIndex = 0; alienIndex < aliens.size(); alienIndex++) {
-			if (randoms[alienIndex] == 200) {
+			if (randoms[alienIndex] == 100) {
 				bombs.add(aliens.get(alienIndex).fire());
 			}
 		}

@@ -1,6 +1,7 @@
 package com.austral.spaceinvaders.components;
 
 import com.austral.spaceinvaders.GlobalConfiguration;
+import com.austral.spaceinvaders.components.views.GameLeaderboardView;
 import com.austral.spaceinvaders.components.views.GameMenuView;
 
 import javax.swing.*;
@@ -10,6 +11,7 @@ public class GameFrame extends JFrame implements GlobalConfiguration {
 
 	private final GameSession gameSession;
 	private final GameMenuView gameMenuView;
+	private GameLeaderboardView leaderboardView;
 	private JPanel currentView;
 
 	public GameFrame(GameSession gameSession) {
@@ -39,11 +41,11 @@ public class GameFrame extends JFrame implements GlobalConfiguration {
 	}
 
 	public void showMainMenu() {
-
+		setView(gameMenuView);
 	}
 
-
 	public void showLeaderboard() {
-		setSize(150, 400);
+		this.leaderboardView = new GameLeaderboardView(this);
+		setView(leaderboardView);
 	}
 }

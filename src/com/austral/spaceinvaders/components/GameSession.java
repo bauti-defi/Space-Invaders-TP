@@ -25,9 +25,23 @@ public class GameSession implements GlobalConfiguration {
 		return gamePlayer.getName();
 	}
 
+	public void quitGame() {
+		if (gameThread.isAlive()) {
+			gameThread.interrupt();
+		}
+		gameFrame.showMainMenu();
+	}
+
+	public int getCurrentPoints() {
+		return gamePlayer.getPoints();
+	}
+
+	public void awardPoints(int points) {
+		gamePlayer.incrementPoints(points);
+	}
 
 	public void playGame() {
-		this.gameEnvironment = new GameEnvironment(gamePlayer);
+		this.gameEnvironment = new GameEnvironment(this);
 		this.gameThread = new Thread(gameEnvironment);
 		gameFrame.setSize(frameWidth, frameHeight);
 		gameFrame.setView(gameEnvironment.getGameView());

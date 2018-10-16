@@ -19,7 +19,7 @@ public class GameFrame extends JFrame implements GlobalConfiguration {
 		add(gameMenuView, BorderLayout.CENTER);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(150, 150);
+		setSize(frameWidth, frameHeight);
 		setResizable(false);
 	}
 

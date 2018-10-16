@@ -1,6 +1,6 @@
 package com.austral.spaceinvaders.components.modifiers;
 
-import com.austral.spaceinvaders.components.GameEnvironment;
+import com.austral.spaceinvaders.components.GameEngine;
 import com.austral.spaceinvaders.util.Distributable;
 
 public abstract class GameModifier implements Distributable {
@@ -15,8 +15,8 @@ public abstract class GameModifier implements Distributable {
 		return name;
 	}
 
-	public abstract void activate(GameEnvironment gameEnvironment);
+	public abstract void activate(GameEngine gameEngine);
 
-	public abstract void deactivate(GameEnvironment gameEnvironment);
+	public abstract void deactivate(GameEngine gameEngine);
 
 }

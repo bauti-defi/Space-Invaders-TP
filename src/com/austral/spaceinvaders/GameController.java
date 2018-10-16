@@ -14,7 +14,7 @@ public class GameController implements GlobalConfiguration {
 	private final ArrayList<GameSession> gameSessions = new ArrayList<GameSession>();
 
 	public void createNewLocalGameSession(String playerName) {
-		this.localGame = new GameFrame(this, new LocalPlayer(playerName));
+		gameSessions.add(new GameSession(new LocalPlayer(playerName)));
 	}
 
 	public void createNewLANGameSession(String playerName) {
@@ -22,10 +22,7 @@ public class GameController implements GlobalConfiguration {
 	}
 
 	public void startGameSessions() {
-		for (GameSession gameSession : gameSessions) {
-			Thread sessionThread = new Thread(gameSession);
-			sessionThread.start();
-		}
+		gameSessions.forEach(gameSession -> gameSession.start());
 	}
 
 	public GamePlayer[] getPlayerHistory() {

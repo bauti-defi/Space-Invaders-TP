@@ -5,6 +5,7 @@ import com.austral.spaceinvaders.components.views.GameView;
 import com.austral.spaceinvaders.models.Level;
 import com.austral.spaceinvaders.models.gameobjects.GameObject;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
@@ -33,7 +34,7 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 		return gameView.getViewRectangle().contains(rectangle);
 	}
 
-	public GameView getGameView() {
+	public JPanel getView() {
 		return gameView;
 	}
 

@@ -44,7 +44,7 @@ public class GameSession implements GlobalConfiguration {
 		this.gameEnvironment = new GameEnvironment(this);
 		this.gameThread = new Thread(gameEnvironment);
 		gameFrame.setSize(frameWidth, frameHeight);
-		gameFrame.setView(gameEnvironment.getGameView());
+		gameFrame.setView(gameEnvironment.getView());
 		gameThread.start();
 	}
 

@@ -17,6 +17,10 @@ public class GameView extends JPanel implements GlobalConfiguration {
 		setDoubleBuffered(true);
 	}
 
+	public Rectangle getViewRectangle() {
+		return new Rectangle(0, 0, getWidth(), getHeight());
+	}
+
 	private void renderGround(Graphics g) {
 		g.setColor(Color.GREEN);
 		g.drawLine(0, groundY, frameWidth, groundY);

@@ -108,17 +108,13 @@ public class GameEngine implements GlobalConfiguration {
 	}
 
 	private boolean isGameObjectOnScreen(GameObject gameObject) {
-		return isRectangleOnScreen(gameObject.getCollisionBox());
-	}
-
-	private boolean isRectangleOnScreen(Rectangle rectangle) {
-		return gameEnvironment.getGameViewRectangle().contains(rectangle);
+		return gameEnvironment.isRectangleOnScreen(gameObject.getCollisionBox());
 	}
 
 	private boolean isValidPlayerMove() {
 		final Rectangle playerCollisionBox = player.getCollisionBox();
 		playerCollisionBox.translate(player.getxVelocity().getVector(), 0);
-		return isRectangleOnScreen(playerCollisionBox);
+		return gameEnvironment.isRectangleOnScreen(playerCollisionBox);
 	}
 
 	public void executeNextAnimationCycle() {

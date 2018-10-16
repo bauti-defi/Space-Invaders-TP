@@ -29,8 +29,8 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 		this.currentLevel = Level.FIRST;
 	}
 
-	public Rectangle getGameViewRectangle() {
-		return new Rectangle(0, 0, gameView.getWidth(), gameView.getHeight());
+	public boolean isRectangleOnScreen(Rectangle rectangle) {
+		return gameView.getViewRectangle().contains(rectangle);
 	}
 
 	public GameView getGameView() {

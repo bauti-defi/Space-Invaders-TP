@@ -2,12 +2,19 @@ package com.austral.spaceinvaders.components;
 
 import com.austral.spaceinvaders.GlobalConfiguration;
 import com.austral.spaceinvaders.models.GamePlayer;
+import com.austral.spaceinvaders.models.PlayerHiscore;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
 
 public class GameSession implements GlobalConfiguration {
 
 
 	private final GameFrame gameFrame;
 	private final GamePlayer gamePlayer;
+	private final File hiscoresFile;
 	private GameEnvironment gameEnvironment;
 	private Thread gameThread;
 
@@ -15,6 +22,15 @@ public class GameSession implements GlobalConfiguration {
 	public GameSession(final GamePlayer gamePlayer) {
 		this.gamePlayer = gamePlayer;
 		this.gameFrame = new GameFrame(this);
+		this.hiscoresFile = new File(leadboardFilePath);
+		if (!hiscoresFile.exists()) {
+			try {
+				hiscoresFile.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+				System.out.println("Error creating hiscores file.");
+			}
+		}
 	}
 
 	public void start() {
@@ -30,6 +46,29 @@ public class GameSession implements GlobalConfiguration {
 			gameThread.interrupt();
 		}
 		gameFrame.showMainMenu();
+	}
+
+	public void closeGame() {
+		savePlayerHiscore(gamePlayer.getHiscore());
+		quitGame();
+	}
+
+	private void savePlayerHiscore(PlayerHiscore playerHiscore) {
+		try (FileWriter writer = new FileWriter(hiscoresFile, true)) {
+			writer.write(playerHiscore.toString() + "\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("Error writing to hiscores file.");
+		}
+	}
+
+	public PlayerHiscore[] getPlayerHiscores() {
+		try {
+			return Files.lines(hiscoresFile.toPath()).map(PlayerHiscore::parse).toArray(PlayerHiscore[]::new);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return new PlayerHiscore[] {};
 	}
 
 	public int getCurrentPoints() {

@@ -52,7 +52,10 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 			gameView.repaint();
 
 			try {
-				Thread.sleep(getGameTickWithLagCompensation(renderStartTime));
+				long durationToSleep = getGameTickWithLagCompensation(renderStartTime);
+				if (durationToSleep > 0) {
+					Thread.sleep(durationToSleep);
+				}
 			} catch (InterruptedException e) {
 				System.out.println("Game loop interrupted.");
 			}
@@ -79,26 +82,32 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 				gameEngine.initiateLevel(Level.FIFTH);
 				break;
 			case FIFTH:
-				inGame = false;
-				gameOverMessage = "Victory";
-				//TODO: saving
+				if (inGame) {
+					inGame = false;
+					gameOverMessage = "Victory";
+					gameSession.closeGame();
+				}
 				break;
 
 		}
 	}
 
 	public void defeat() {
-		inGame = false;
-		gameOverMessage = "Defeat";
-		System.out.println(gameOverMessage);
-		//TODO: post death mechanics (saving)
+		if (inGame) {
+			inGame = false;
+			gameOverMessage = "Defeat";
+			System.out.println(gameOverMessage);
+			gameSession.closeGame();
+		}
 	}
 
 	public void invasion() {
-		inGame = false;
-		gameOverMessage = "Invasion";
-		System.out.println(gameOverMessage);
-		//TODO: post death mechanics (saving)
+		if (inGame) {
+			inGame = false;
+			gameOverMessage = "Invasion";
+			System.out.println(gameOverMessage);
+			gameSession.closeGame();
+		}
 	}
 
 	private long getGameTickWithLagCompensation(long renderStartTime) {

@@ -64,7 +64,7 @@ public class GameView extends JPanel implements GlobalConfiguration {
 		g.drawString(gameEnvironment.getGameOverMessage(), (frameWidth - metr.stringWidth(gameEnvironment.getGameOverMessage())) / 2, frameWidth / 2);
 	}
 
-	public void renderGameObjects(Graphics g) {
+	private void renderGameObjects(Graphics g) {
 		gameEnvironment.getGameObjects().forEach(gameObject -> gameObject.render(g));
 	}
 

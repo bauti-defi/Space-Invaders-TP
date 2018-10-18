@@ -55,16 +55,24 @@ public class GameSession implements GlobalConfiguration {
 
 	private void savePlayerHiscore(PlayerHiscore playerHiscore) {
 		try (FileWriter writer = new FileWriter(hiscoresFile, true)) {
-			writer.write(playerHiscore.toString() + "\n");
+			writer.write(playerHiscore.toString() + System.lineSeparator());
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("Error writing to hiscores file.");
 		}
 	}
 
-	public PlayerHiscore[] getPlayerHiscores() {
+	public PlayerHiscore[] getHiscores() {
 		try {
-			return Files.lines(hiscoresFile.toPath()).map(PlayerHiscore::parse).toArray(PlayerHiscore[]::new);
+			return Files.lines(hiscoresFile.toPath()).map(PlayerHiscore::parse)
+					.sorted((player1, player2) -> {
+						if (player1.getScore() < player2.getScore()) {
+							return 1;
+						} else if (player1.getScore() > player2.getScore()) {
+							return -1;
+						}
+						return 0;
+					}).toArray(PlayerHiscore[]::new);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -80,6 +88,7 @@ public class GameSession implements GlobalConfiguration {
 	}
 
 	public void playGame() {
+		this.gamePlayer.resetPoints();
 		this.gameEnvironment = new GameEnvironment(this);
 		this.gameThread = new Thread(gameEnvironment);
 		gameFrame.setSize(frameWidth, frameHeight);

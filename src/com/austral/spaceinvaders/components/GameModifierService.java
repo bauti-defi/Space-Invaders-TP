@@ -1,5 +1,7 @@
 package com.austral.spaceinvaders.components;
 
+import com.austral.spaceinvaders.components.modifiers.DoubleShot;
+import com.austral.spaceinvaders.components.modifiers.Freeze;
 import com.austral.spaceinvaders.components.modifiers.GameModifier;
 import com.austral.spaceinvaders.components.modifiers.GodMode;
 import com.austral.spaceinvaders.util.DistributionList;
@@ -8,7 +10,7 @@ import com.austral.spaceinvaders.util.RandomGenerator;
 public class GameModifierService {
 
 	private final GameEngine gameEngine;
-	private final DistributionList<GameModifier> gameModifierDistributionList = new DistributionList<>(new GodMode());
+	private final DistributionList<GameModifier> gameModifierDistributionList = new DistributionList<>(new GodMode(), new DoubleShot(), new Freeze());
 
 	private GameModifier currentGameModifier;
 	private int currentModifierDuration;

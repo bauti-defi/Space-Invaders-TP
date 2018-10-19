@@ -45,8 +45,10 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 			renderStartTime = System.currentTimeMillis();
 
 			if (!pause) {
-				gameEngine.executeNextAnimationCycle();
-				gameView.repaint();
+				synchronized (gameEngine) {
+					gameEngine.executeNextAnimationCycle();
+					gameView.repaint();
+				}
 			}
 
 			try {

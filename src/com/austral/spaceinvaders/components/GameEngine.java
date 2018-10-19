@@ -17,8 +17,6 @@ import com.austral.spaceinvaders.util.RandomGenerator;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class GameEngine implements GlobalConfiguration {
 
@@ -26,7 +24,7 @@ public class GameEngine implements GlobalConfiguration {
 	private final GameEnvironment gameEnvironment;
 	private Player player;
 	private ArrayList<Alien> aliens = new ArrayList<>();
-	private List<Shot> shots = Collections.synchronizedList(new ArrayList<>()); //must be synchronized for shooting
+	private ArrayList<Shot> shots = new ArrayList<>();
 	private ArrayList<Bomb> bombs = new ArrayList<>();
 	private ArrayList<Shield> shields = new ArrayList<>();
 	private final GameModifierService gameModifierService;
@@ -268,14 +266,10 @@ public class GameEngine implements GlobalConfiguration {
 
 	public void notifySpaceBarPressed() {
 		if (player.isDoubleshotActive()) {
-			synchronized (shots) {
-				shots.add(player.fire());
-				shots.add(player.secondaryFire());
-			}
+			shots.add(player.fire());
+			shots.add(player.secondaryFire());
 		} else {
-			synchronized (shots) {
-				shots.add(player.fire());
-			}
+			shots.add(player.fire());
 		}
 	}
 

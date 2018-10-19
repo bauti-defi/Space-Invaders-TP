@@ -10,6 +10,9 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
+import static javax.swing.JOptionPane.YES_NO_OPTION;
+import static javax.swing.JOptionPane.YES_OPTION;
+
 public class GameEnvironment implements GlobalConfiguration, Runnable {
 
 
@@ -20,6 +23,7 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 	private boolean inGame;
 	private Level currentLevel;
 	private String gameOverMessage;
+	private boolean pause;
 
 
 	public GameEnvironment(final GameSession gameSession) {
@@ -28,14 +32,6 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 		this.gameRemoteAdapter = new GameRemoteAdapter(this);
 		this.gameView = new GameView(this);
 		this.currentLevel = Level.FIRST;
-	}
-
-	public boolean isRectangleOnScreen(Rectangle rectangle) {
-		return gameView.getViewRectangle().contains(rectangle);
-	}
-
-	public JPanel getView() {
-		return gameView;
 	}
 
 	@Override
@@ -48,8 +44,10 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 		while (inGame) {
 			renderStartTime = System.currentTimeMillis();
 
-			gameEngine.executeNextAnimationCycle();
-			gameView.repaint();
+			if (!pause) {
+				gameEngine.executeNextAnimationCycle();
+				gameView.repaint();
+			}
 
 			try {
 				long durationToSleep = getGameTickWithLagCompensation(renderStartTime);
@@ -60,6 +58,11 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 				System.out.println("Game loop interrupted.");
 			}
 		}
+	}
+
+	private long getGameTickWithLagCompensation(long renderStartTime) {
+		long renderLagDuration = System.currentTimeMillis() - renderStartTime;
+		return gameTickDuration - renderLagDuration;
 	}
 
 	private void quit() {
@@ -88,7 +91,6 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 					gameSession.closeGame();
 				}
 				break;
-
 		}
 	}
 
@@ -110,10 +112,6 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 		}
 	}
 
-	private long getGameTickWithLagCompensation(long renderStartTime) {
-		long renderLagDuration = System.currentTimeMillis() - renderStartTime;
-		return gameTickDuration - renderLagDuration;
-	}
 
 	public void notifyKeyPressed(KeyEvent event) {
 		switch (event.getKeyCode()) {
@@ -127,7 +125,11 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 				gameEngine.notifySpaceBarPressed();
 				break;
 			case KeyEvent.VK_ESCAPE:
-				quit();
+				pause = true;
+				if (JOptionPane.showConfirmDialog(gameView, "Abandonar?", null, YES_NO_OPTION) == YES_OPTION) {
+					quit();
+				}
+				pause = false;
 				break;
 		}
 	}
@@ -167,6 +169,14 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 
 	public List<GameObject> getGameObjects() {
 		return gameEngine.getGameObjects();
+	}
+
+	public boolean isRectangleOnScreen(Rectangle rectangle) {
+		return gameView.getViewRectangle().contains(rectangle);
+	}
+
+	public JPanel getView() {
+		return gameView;
 	}
 
 }

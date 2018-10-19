@@ -62,7 +62,7 @@ public class GameSession implements GlobalConfiguration {
 		}
 	}
 
-	public PlayerHiscore[] getHiscores() {
+	public String[] getFormattedHiscores() {
 		try {
 			return Files.lines(hiscoresFile.toPath()).map(PlayerHiscore::parse)
 					.sorted((player1, player2) -> {
@@ -72,11 +72,11 @@ public class GameSession implements GlobalConfiguration {
 							return -1;
 						}
 						return 0;
-					}).toArray(PlayerHiscore[]::new);
+					}).map(PlayerHiscore::getFormatted).toArray(String[]::new);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return new PlayerHiscore[] {};
+		return new String[0];
 	}
 
 	public int getCurrentPoints() {

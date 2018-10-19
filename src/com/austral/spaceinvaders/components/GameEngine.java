@@ -41,6 +41,10 @@ public class GameEngine implements GlobalConfiguration {
 		return player;
 	}
 
+	public ArrayList<Alien> getAliens(){
+		return aliens;
+	}
+
 	private void reset() {
 		aliens.clear();
 		shots.clear();
@@ -261,7 +265,12 @@ public class GameEngine implements GlobalConfiguration {
 	}
 
 	public void notifySpaceBarPressed() {
-		shots.add(player.fire());
+		if(player.isDoubleshotActive()){
+			shots.add(player.fire());
+			shots.add(player.secondaryFire());
+		}else{
+			shots.add(player.fire());
+		}
 	}
 
 	public String getActiveGameModifierName() {

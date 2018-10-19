@@ -5,7 +5,7 @@ import com.austral.spaceinvaders.physics.Velocity;
 public abstract class Character extends Sprite {
 
 	private int health;
-	private boolean immune, doubleshot, freeze;
+	private boolean immune, doubleshot, frozen;
 
 	public Character(final int x, final int y, final int health, final String imagePath) {
 		super(x, y, imagePath);
@@ -29,28 +29,31 @@ public abstract class Character extends Sprite {
 		return immune;
 	}
 
-	public void Doubleshot(){
+	public void Doubleshot() {
 		this.doubleshot = true;
 	}
 
-	public void NoDoubleShot(){
+	public void NoDoubleShot() {
 		this.doubleshot = false;
 	}
 
-	public boolean isDoubleshotActive(){
+	public boolean isDoubleshotActive() {
 		return doubleshot;
 	}
 
-	public void Freeze(){
-		this.freeze = true;
+	public void freeze() {
+		this.frozen = true;
 	}
 
-	public void UnFreeze(){
-		this.freeze = false;
+	public void unFreeze() {
+		this.frozen = false;
 	}
 
-	public boolean isFreeze(){
-		return freeze;
+	@Override
+	public void animate() {
+		if (!frozen) {
+			super.animate();
+		}
 	}
 
 	public int getHealth() {

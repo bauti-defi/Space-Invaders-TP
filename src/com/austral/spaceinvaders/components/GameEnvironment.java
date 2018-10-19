@@ -30,14 +30,6 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 		this.currentLevel = Level.FIRST;
 	}
 
-	public boolean isRectangleOnScreen(Rectangle rectangle) {
-		return gameView.getViewRectangle().contains(rectangle);
-	}
-
-	public JPanel getView() {
-		return gameView;
-	}
-
 	@Override
 	public void run() {
 		inGame = true;
@@ -60,6 +52,11 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 				System.out.println("Game loop interrupted.");
 			}
 		}
+	}
+
+	private long getGameTickWithLagCompensation(long renderStartTime) {
+		long renderLagDuration = System.currentTimeMillis() - renderStartTime;
+		return gameTickDuration - renderLagDuration;
 	}
 
 	private void quit() {
@@ -88,7 +85,6 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 					gameSession.closeGame();
 				}
 				break;
-
 		}
 	}
 
@@ -110,10 +106,6 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 		}
 	}
 
-	private long getGameTickWithLagCompensation(long renderStartTime) {
-		long renderLagDuration = System.currentTimeMillis() - renderStartTime;
-		return gameTickDuration - renderLagDuration;
-	}
 
 	public void notifyKeyPressed(KeyEvent event) {
 		switch (event.getKeyCode()) {
@@ -167,6 +159,14 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 
 	public List<GameObject> getGameObjects() {
 		return gameEngine.getGameObjects();
+	}
+
+	public boolean isRectangleOnScreen(Rectangle rectangle) {
+		return gameView.getViewRectangle().contains(rectangle);
+	}
+
+	public JPanel getView() {
+		return gameView;
 	}
 
 }

@@ -94,10 +94,6 @@ public class GameEngine implements GlobalConfiguration {
 
 	private void animateAliens() {
 		aliens.forEach(alien -> {
-			if(alien.isFreeze()){
-				alien.setxVelocity(new Velocity(0, Direction.SOUTH));
-				alien.setyVelocity(new Velocity(0, Direction.SOUTH));
-			}
 			alien.animate();
 			if (!isGameObjectOnScreen(alien)) {
 				flipVelocityDirection(alien.getxVelocity());
@@ -189,7 +185,6 @@ public class GameEngine implements GlobalConfiguration {
 		dropAlienBombs();
 
 		gameModifierService.ping();
-		//make branch
 	}
 
 	private void spawnUFO() {

@@ -12,13 +12,12 @@ public class GameFrame extends JFrame implements GlobalConfiguration {
 	private final GameSession gameSession;
 	private final GameMenuView gameMenuView;
 	private GameLeaderboardView leaderboardView;
-	private JPanel currentView;
 
 	public GameFrame(GameSession gameSession) {
 		super("Space Invaders - " + gameSession.getPlayerName());
 		this.gameSession = gameSession;
-		currentView = this.gameMenuView = new GameMenuView(this);
-		add(gameMenuView, BorderLayout.CENTER);
+		this.gameMenuView = new GameMenuView(this);
+		this.getContentPane().add(gameMenuView, BorderLayout.CENTER);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(frameWidth, frameHeight);
@@ -26,11 +25,8 @@ public class GameFrame extends JFrame implements GlobalConfiguration {
 	}
 
 	public <T extends JPanel> void setView(T view) {
-		if (currentView != null) {
-			remove(currentView);
-		}
-		add(view, BorderLayout.CENTER);
-		currentView = view;
+		this.getContentPane().removeAll();
+		this.getContentPane().add(view, BorderLayout.CENTER);
 		revalidate();
 		repaint();
 		setLocationRelativeTo(null);

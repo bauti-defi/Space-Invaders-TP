@@ -10,6 +10,9 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
+import static javax.swing.JOptionPane.YES_NO_OPTION;
+import static javax.swing.JOptionPane.YES_OPTION;
+
 public class GameEnvironment implements GlobalConfiguration, Runnable {
 
 
@@ -20,6 +23,7 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 	private boolean inGame;
 	private Level currentLevel;
 	private String gameOverMessage;
+	private boolean pause;
 
 
 	public GameEnvironment(final GameSession gameSession) {
@@ -40,8 +44,10 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 		while (inGame) {
 			renderStartTime = System.currentTimeMillis();
 
-			gameEngine.executeNextAnimationCycle();
-			gameView.repaint();
+			if (!pause) {
+				gameEngine.executeNextAnimationCycle();
+				gameView.repaint();
+			}
 
 			try {
 				long durationToSleep = getGameTickWithLagCompensation(renderStartTime);
@@ -119,7 +125,11 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 				gameEngine.notifySpaceBarPressed();
 				break;
 			case KeyEvent.VK_ESCAPE:
-				quit();
+				pause = true;
+				if (JOptionPane.showConfirmDialog(gameView, "Abandonar?", null, YES_NO_OPTION) == YES_OPTION) {
+					quit();
+				}
+				pause = false;
 				break;
 		}
 	}

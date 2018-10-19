@@ -17,6 +17,10 @@ public class Player extends Character implements Controllable {
 		return new Shot(getX() + (getWidth() / 2), getY());
 	}
 
+	public Shot secondaryFire() {
+		return new Shot(getX() + (getWidth() / 4), getY());
+	}
+
 	@Override
 	public void moveLeft() {
 		setxVelocity(new Velocity(5, Direction.WEST));

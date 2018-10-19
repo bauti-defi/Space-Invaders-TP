@@ -1,141 +1,82 @@
 package com.austral.spaceinvaders.components;
 
 import com.austral.spaceinvaders.GlobalConfiguration;
-import com.austral.spaceinvaders.components.views.GameView;
 import com.austral.spaceinvaders.models.GamePlayer;
-import com.austral.spaceinvaders.models.Level;
-import com.austral.spaceinvaders.models.gameobjects.GameObject;
+import com.austral.spaceinvaders.models.PlayerHiscore;
 
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.util.List;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
 
-public class GameSession implements GlobalConfiguration, Runnable {
+public class GameSession implements GlobalConfiguration {
 
-	private final GameEnvironment gameEnvironment;
-	private final GameRemoteAdapter gameRemoteAdapter;
-	private final GameView gameView;
+
+	private final GameFrame gameFrame;
 	private final GamePlayer gamePlayer;
-	private boolean inGame;
-	private Level currentLevel;
-	private String gameOverMessage;
+	private final File hiscoresFile;
+	private GameEnvironment gameEnvironment;
+	private Thread gameThread;
 
 
 	public GameSession(final GamePlayer gamePlayer) {
 		this.gamePlayer = gamePlayer;
-		this.gameEnvironment = new GameEnvironment(this);
-		this.gameRemoteAdapter = new GameRemoteAdapter(this);
-		this.gameView = new GameView(this);
-		this.currentLevel = Level.FIRST;
-	}
-
-	public Rectangle getGameViewRectangle() {
-		return new Rectangle(0, 0, gameView.getWidth(), gameView.getHeight());
-	}
-
-	public GameView getGameView() {
-		return gameView;
-	}
-
-	@Override
-	public void run() {
-		inGame = true;
-		gameView.addKeyListener(gameRemoteAdapter);
-		gameView.requestFocusInWindow();
-
-		long renderStartTime;
-		while (inGame) {
-			renderStartTime = System.currentTimeMillis();
-
-			gameEnvironment.executeNextAnimationCycle();
-			gameView.repaint();
-
+		this.gameFrame = new GameFrame(this);
+		this.hiscoresFile = new File(leadboardFilePath);
+		if (!hiscoresFile.exists()) {
 			try {
-				Thread.sleep(getGameTickWithLagCompensation(renderStartTime));
-			} catch (InterruptedException e) {
-				System.out.println("Error in game loop.");
+				hiscoresFile.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+				System.out.println("Error creating hiscores file.");
 			}
 		}
 	}
 
-	public void quit() {
-		inGame = false;
+	public void start() {
+		this.gameFrame.setVisible(true);
 	}
 
-	public void victory() {
-		switch (currentLevel) {
-			case FIRST:
-				gameEnvironment.initiateLevel(Level.SECOND);
-				break;
-			case SECOND:
-				gameEnvironment.initiateLevel(Level.THIRD);
-				break;
-			case THIRD:
-				gameEnvironment.initiateLevel(Level.FOURTH);
-				break;
-			case FOURTH:
-				gameEnvironment.initiateLevel(Level.FIFTH);
-				break;
-			case FIFTH:
-				inGame = false;
-				gameOverMessage = "Victory";
-				//TODO: saving
-				break;
+	public String getPlayerName() {
+		return gamePlayer.getName();
+	}
 
+	public void quitGame() {
+		if (gameThread.isAlive()) {
+			gameThread.interrupt();
+		}
+		gameFrame.showMainMenu();
+	}
+
+	public void closeGame() {
+		savePlayerHiscore(gamePlayer.getHiscore());
+		quitGame();
+	}
+
+	private void savePlayerHiscore(PlayerHiscore playerHiscore) {
+		try (FileWriter writer = new FileWriter(hiscoresFile, true)) {
+			writer.write(playerHiscore.toString() + System.lineSeparator());
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("Error writing to hiscores file.");
 		}
 	}
 
-	public void defeat() {
-		inGame = false;
-		gameOverMessage = "Defeat";
-		System.out.println(gameOverMessage);
-		//TODO: post death mechanics (saving)
-	}
-
-	public void invasion() {
-		inGame = false;
-		gameOverMessage = "Invasion";
-		System.out.println(gameOverMessage);
-		//TODO: post death mechanics (saving)
-	}
-
-	private long getGameTickWithLagCompensation(long renderStartTime) {
-		long renderLagDuration = System.currentTimeMillis() - renderStartTime;
-		return gameTickDuration - renderLagDuration;
-	}
-
-	public void notifyKeyPressed(KeyEvent event) {
-		switch (event.getKeyCode()) {
-			case KeyEvent.VK_LEFT:
-				gameEnvironment.notifyLeftArrowPressed();
-				break;
-			case KeyEvent.VK_RIGHT:
-				gameEnvironment.notifyRightArrowPressed();
-				break;
-			case KeyEvent.VK_SPACE:
-				gameEnvironment.notifySpaceBarPressed();
-				break;
-			case KeyEvent.VK_ESCAPE:
-				quit();
-				break;
+	public String[] getFormattedHiscores() {
+		try {
+			return Files.lines(hiscoresFile.toPath()).map(PlayerHiscore::parse)
+					.sorted((player1, player2) -> {
+						if (player1.getScore() < player2.getScore()) {
+							return 1;
+						} else if (player1.getScore() > player2.getScore()) {
+							return -1;
+						}
+						return 0;
+					}).map(PlayerHiscore::getFormatted).toArray(String[]::new);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-	}
-
-	public void notifyKeyReleased(KeyEvent event) {
-		switch (event.getKeyCode()) {
-			case KeyEvent.VK_LEFT:
-			case KeyEvent.VK_RIGHT:
-				gameEnvironment.notifyArrowUnPressed();
-				break;
-		}
-	}
-
-	public String getActiveGameModifierName() {
-		return gameEnvironment.getActiveGameModifierName();
-	}
-
-	public int getPlayerHealth() {
-		return gameEnvironment.getPlayer().getHealth();
+		return new String[0];
 	}
 
 	public int getCurrentPoints() {
@@ -146,16 +87,13 @@ public class GameSession implements GlobalConfiguration, Runnable {
 		gamePlayer.incrementPoints(points);
 	}
 
-	public boolean inGame() {
-		return inGame;
-	}
-
-	public String getGameOverMessage() {
-		return gameOverMessage;
-	}
-
-	public List<GameObject> getGameObjects() {
-		return gameEnvironment.getGameObjects();
+	public void playGame() {
+		this.gamePlayer.resetPoints();
+		this.gameEnvironment = new GameEnvironment(this);
+		this.gameThread = new Thread(gameEnvironment);
+		gameFrame.setSize(frameWidth, frameHeight);
+		gameFrame.setView(gameEnvironment.getView());
+		gameThread.start();
 	}
 
 

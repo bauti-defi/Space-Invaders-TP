@@ -41,7 +41,7 @@ public class GameEngine implements GlobalConfiguration {
 		return player;
 	}
 
-	public ArrayList<Alien> getAliens(){
+	public ArrayList<Alien> getAliens() {
 		return aliens;
 	}
 
@@ -121,7 +121,7 @@ public class GameEngine implements GlobalConfiguration {
 		return gameEnvironment.isRectangleOnScreen(playerCollisionBox);
 	}
 
-	public void executeNextAnimationCycle() {
+	public synchronized void executeNextAnimationCycle() {
 		//Delete all alien and shot collision flags
 		getAlienCollisions().forEach(hit -> {
 			hit.getAlphaCollider().takeDamage(hit.getBetaCollider().getDamage());
@@ -264,11 +264,11 @@ public class GameEngine implements GlobalConfiguration {
 		player.stop();
 	}
 
-	public void notifySpaceBarPressed() {
-		if(player.isDoubleshotActive()){
+	public synchronized void notifySpaceBarPressed() {
+		if (player.isDoubleshotActive()) {
 			shots.add(player.fire());
 			shots.add(player.secondaryFire());
-		}else{
+		} else {
 			shots.add(player.fire());
 		}
 	}

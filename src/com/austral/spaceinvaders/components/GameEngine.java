@@ -26,7 +26,7 @@ public class GameEngine implements GlobalConfiguration {
 	private final GameEnvironment gameEnvironment;
 	private Player player;
 	private ArrayList<Alien> aliens = new ArrayList<>();
-	private List<Shot> shots;
+	private List<Shot> shots = Collections.synchronizedList(new ArrayList<>()); //must be synchronized for shooting
 	private ArrayList<Bomb> bombs = new ArrayList<>();
 	private ArrayList<Shield> shields = new ArrayList<>();
 	private final GameModifierService gameModifierService;
@@ -36,7 +36,6 @@ public class GameEngine implements GlobalConfiguration {
 	public GameEngine(GameEnvironment gameEnvironment) {
 		this.gameEnvironment = gameEnvironment;
 		this.gameModifierService = new GameModifierService(this);
-		this.shots = Collections.synchronizedList(new ArrayList<>());
 		initiateLevel(Level.FIRST);
 	}
 

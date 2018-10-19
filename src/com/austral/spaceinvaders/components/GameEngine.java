@@ -17,6 +17,8 @@ import com.austral.spaceinvaders.util.RandomGenerator;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class GameEngine implements GlobalConfiguration {
 
@@ -24,7 +26,7 @@ public class GameEngine implements GlobalConfiguration {
 	private final GameEnvironment gameEnvironment;
 	private Player player;
 	private ArrayList<Alien> aliens = new ArrayList<>();
-	private ArrayList<Shot> shots = new ArrayList<>();
+	private List<Shot> shots;
 	private ArrayList<Bomb> bombs = new ArrayList<>();
 	private ArrayList<Shield> shields = new ArrayList<>();
 	private final GameModifierService gameModifierService;
@@ -34,6 +36,7 @@ public class GameEngine implements GlobalConfiguration {
 	public GameEngine(GameEnvironment gameEnvironment) {
 		this.gameEnvironment = gameEnvironment;
 		this.gameModifierService = new GameModifierService(this);
+		this.shots = Collections.synchronizedList(new ArrayList<>());
 		initiateLevel(Level.FIRST);
 	}
 
@@ -41,7 +44,7 @@ public class GameEngine implements GlobalConfiguration {
 		return player;
 	}
 
-	public ArrayList<Alien> getAliens(){
+	public ArrayList<Alien> getAliens() {
 		return aliens;
 	}
 
@@ -265,11 +268,15 @@ public class GameEngine implements GlobalConfiguration {
 	}
 
 	public void notifySpaceBarPressed() {
-		if(player.isDoubleshotActive()){
-			shots.add(player.fire());
-			shots.add(player.secondaryFire());
-		}else{
-			shots.add(player.fire());
+		if (player.isDoubleshotActive()) {
+			synchronized (shots) {
+				shots.add(player.fire());
+				shots.add(player.secondaryFire());
+			}
+		} else {
+			synchronized (shots) {
+				shots.add(player.fire());
+			}
 		}
 	}
 

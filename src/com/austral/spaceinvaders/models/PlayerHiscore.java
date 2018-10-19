@@ -1,6 +1,7 @@
 package com.austral.spaceinvaders.models;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class PlayerHiscore {
 
@@ -39,7 +40,9 @@ public class PlayerHiscore {
 
 	public String getFormatted() {
 		StringBuilder builder = new StringBuilder("<html><font color='white'>");
-		builder.append(toString().replace("::", "           "));
+		builder.append(score).append(" - - - - - - ");
+		builder.append(name).append(" - - - - - - ");
+		builder.append(date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 		builder.append("</font></html>");
 		return builder.toString();
 	}

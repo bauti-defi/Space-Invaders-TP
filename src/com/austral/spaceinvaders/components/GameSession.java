@@ -11,7 +11,6 @@ import java.nio.file.Files;
 
 public class GameSession implements GlobalConfiguration {
 
-
 	private final GameFrame gameFrame;
 	private final GamePlayer gamePlayer;
 	private final File hiscoresFile;
@@ -49,8 +48,8 @@ public class GameSession implements GlobalConfiguration {
 	}
 
 	public void closeGame() {
-		savePlayerHiscore(gamePlayer.getHiscore());
 		quitGame();
+		savePlayerHiscore(gamePlayer.getHiscore());
 	}
 
 	private void savePlayerHiscore(PlayerHiscore playerHiscore) {
@@ -95,6 +94,5 @@ public class GameSession implements GlobalConfiguration {
 		gameFrame.setView(gameEnvironment.getView());
 		gameThread.start();
 	}
-
 
 }

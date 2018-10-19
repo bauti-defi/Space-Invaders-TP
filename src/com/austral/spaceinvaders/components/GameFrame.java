@@ -41,7 +41,7 @@ public class GameFrame extends JFrame implements GlobalConfiguration {
 	}
 
 	public void showLeaderboard() {
-		this.leaderboardView = new GameLeaderboardView(this, gameSession.getHiscores());
+		this.leaderboardView = new GameLeaderboardView(this, gameSession.getFormattedHiscores());
 		setView(leaderboardView);
 	}
 }

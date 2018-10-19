@@ -37,6 +37,13 @@ public class PlayerHiscore {
 		return score + "::" + name + "::" + date;
 	}
 
+	public String getFormatted() {
+		StringBuilder builder = new StringBuilder("<html><font color='white'>");
+		builder.append(toString().replace("::", "           "));
+		builder.append("</font></html>");
+		return builder.toString();
+	}
+
 	public static PlayerHiscore parse(String line) {
 		final String[] parts = line.split("::");
 		return new PlayerHiscore(parts[1], Integer.parseInt(parts[0]), LocalDateTime.parse(parts[2]));

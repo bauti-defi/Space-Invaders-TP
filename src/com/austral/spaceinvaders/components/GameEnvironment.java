@@ -15,7 +15,6 @@ import static javax.swing.JOptionPane.YES_OPTION;
 
 public class GameEnvironment implements GlobalConfiguration, Runnable {
 
-
 	private final GameEngine gameEngine;
 	private final GameRemoteAdapter gameRemoteAdapter;
 	private final GameView gameView;
@@ -24,7 +23,6 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 	private Level currentLevel;
 	private String gameOverMessage;
 	private boolean pause;
-
 
 	public GameEnvironment(final GameSession gameSession) {
 		this.gameSession = gameSession;
@@ -70,6 +68,8 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 		gameSession.quitGame();
 	}
 
+
+	//TODO:Fix this
 	public void victory() {
 		switch (currentLevel) {
 			case FIRST:

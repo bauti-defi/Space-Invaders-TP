@@ -18,7 +18,7 @@ public class GameFrame extends JFrame implements GlobalConfiguration {
 		this.gameSession = gameSession;
 		this.gameMenuView = new GameMenuView(this);
 		this.getContentPane().add(gameMenuView, BorderLayout.CENTER);
-		setLocationRelativeTo(null);
+		setLocation(frameWidth + 200, frameHeight / 4);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(frameWidth, frameHeight);
 		setResizable(false);

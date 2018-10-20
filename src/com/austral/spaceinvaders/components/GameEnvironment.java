@@ -69,24 +69,19 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 	}
 
 
-	//TODO:Fix this
 	public void victory() {
 		switch (currentLevel) {
 			case FIRST:
-				this.currentLevel = Level.SECOND;
-				gameEngine.initiateLevel(Level.SECOND);
+				currentLevel = Level.SECOND;
 				break;
 			case SECOND:
-				this.currentLevel = Level.THIRD;
-				gameEngine.initiateLevel(Level.THIRD);
+				currentLevel = Level.THIRD;
 				break;
 			case THIRD:
-				this.currentLevel = Level.FOURTH;
-				gameEngine.initiateLevel(Level.FOURTH);
+				currentLevel = Level.FOURTH;
 				break;
 			case FOURTH:
-				this.currentLevel = Level.FIFTH;
-				gameEngine.initiateLevel(Level.FIFTH);
+				currentLevel = Level.FIFTH;
 				break;
 			case FIFTH:
 				if (inGame) {
@@ -94,8 +89,9 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 					gameOverMessage = "Victory";
 					gameSession.closeGame();
 				}
-				break;
+				return;
 		}
+		gameEngine.initiateLevel(currentLevel);
 	}
 
 	public void defeat() {

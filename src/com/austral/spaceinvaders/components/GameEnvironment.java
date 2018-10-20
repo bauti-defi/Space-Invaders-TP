@@ -71,7 +71,6 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 
 	//TODO:Fix this
 	public void victory() {
-		System.out.println(currentLevel);
 		switch (currentLevel) {
 			case FIRST:
 				this.currentLevel = Level.SECOND;

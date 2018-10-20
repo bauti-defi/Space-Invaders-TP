@@ -170,7 +170,9 @@ public class GameEngine implements GlobalConfiguration {
 		}
 
 		//Animate sprites for next game tick
-		animateAliens();
+		if(gameTicksSinceUFOSpawn % 2 == 0){
+			animateAliens();
+		}
 		animateBombs();
 		animateShots();
 

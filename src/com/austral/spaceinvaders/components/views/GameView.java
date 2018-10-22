@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class GameView extends JPanel implements GlobalConfiguration {
 
-	private final Image heartImage = new ImageIcon("src/images/heart.png").getImage();
+	private final Image HEART_IMAGE = new ImageIcon("src/images/heart.png").getImage();
 	private final GameEnvironment gameEnvironment;
 
 	public GameView(GameEnvironment gameEnvironment) {
@@ -35,7 +35,7 @@ public class GameView extends JPanel implements GlobalConfiguration {
 	private void renderVitals(Graphics g) {
 		g.setColor(Color.WHITE);
 		for (int lives = 0; lives < gameEnvironment.getPlayerHealth(); lives++) {
-			g.drawImage(heartImage, frameWidth - 50 + (15 * lives), 5, this);
+			g.drawImage(HEART_IMAGE, frameWidth - 50 + (15 * lives), 5, this);
 		}
 	}
 
@@ -47,22 +47,6 @@ public class GameView extends JPanel implements GlobalConfiguration {
 		}
 	}
 
-	private void renderGameOver(Graphics g) {
-		g.setColor(Color.black);
-		g.fillRect(0, 0, frameWidth, frameHeight);
-
-		g.setColor(new Color(0, 32, 48));
-		g.fillRect(50, frameWidth / 2 - 30, frameWidth - 100, 50);
-		g.setColor(Color.white);
-		g.drawRect(50, frameWidth / 2 - 30, frameWidth - 100, 50);
-
-		Font small = new Font("Helvetica", Font.BOLD, 14);
-		FontMetrics metr = this.getFontMetrics(small);
-
-		g.setColor(Color.white);
-		g.setFont(small);
-		g.drawString(gameEnvironment.getGameOverMessage(), (frameWidth - metr.stringWidth(gameEnvironment.getGameOverMessage())) / 2, frameWidth / 2);
-	}
 
 	private void renderGameObjects(Graphics g) {
 		gameEnvironment.getGameObjects().forEach(gameObject -> gameObject.render(g));
@@ -78,8 +62,6 @@ public class GameView extends JPanel implements GlobalConfiguration {
 			renderGround(g);
 			renderGameModifier(g);
 			renderGameObjects(g);
-		} else {
-			renderGameOver(g);
 		}
 	}
 

@@ -40,15 +40,34 @@ public class GameSession implements GlobalConfiguration {
 		return gamePlayer.getName();
 	}
 
-	public void quitGame() {
+	private void shutdownGame() {
 		if (gameThread.isAlive()) {
 			gameThread.interrupt();
 		}
+	}
+
+	public void victorious() {
+		gameFrame.showVictory();
+		closeGame();
+	}
+
+	public void defeated() {
+		gameFrame.showDefeat();
+		closeGame();
+	}
+
+	public void invaded() {
+		gameFrame.showInvasion();
+		closeGame();
+	}
+
+	public void quit() {
+		shutdownGame();
 		gameFrame.showMainMenu();
 	}
 
-	public void closeGame() {
-		quitGame();
+	private void closeGame() {
+		shutdownGame();
 		savePlayerHiscore(gamePlayer.getHiscore());
 	}
 

@@ -21,7 +21,6 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 	private final GameSession gameSession;
 	private boolean inGame;
 	private Level currentLevel;
-	private String gameOverMessage;
 	private boolean pause;
 
 	public GameEnvironment(final GameSession gameSession) {
@@ -65,7 +64,7 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 
 	private void quit() {
 		inGame = false;
-		gameSession.quitGame();
+		gameSession.quit();
 	}
 
 
@@ -86,8 +85,7 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 			case FIFTH:
 				if (inGame) {
 					inGame = false;
-					gameOverMessage = "Victory";
-					gameSession.closeGame();
+					gameSession.victorious();
 				}
 				return;
 		}
@@ -97,18 +95,14 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 	public void defeat() {
 		if (inGame) {
 			inGame = false;
-			gameOverMessage = "Defeat";
-			System.out.println(gameOverMessage);
-			gameSession.closeGame();
+			gameSession.defeated();
 		}
 	}
 
 	public void invasion() {
 		if (inGame) {
 			inGame = false;
-			gameOverMessage = "Invasion";
-			System.out.println(gameOverMessage);
-			gameSession.closeGame();
+			gameSession.invaded();
 		}
 	}
 
@@ -161,10 +155,6 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 
 	public boolean inGame() {
 		return inGame;
-	}
-
-	public String getGameOverMessage() {
-		return gameOverMessage;
 	}
 
 	public List<GameObject> getGameObjects() {

@@ -90,7 +90,7 @@ public class GameSession implements GlobalConfiguration {
 							return -1;
 						}
 						return 0;
-					}).map(PlayerHiscore::getFormatted).toArray(String[]::new);
+					}).map(PlayerHiscore::getFormatted).limit(10).toArray(String[]::new);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

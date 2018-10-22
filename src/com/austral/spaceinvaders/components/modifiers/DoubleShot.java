@@ -10,12 +10,12 @@ public class DoubleShot extends GameModifier {
 
     @Override
     public void activate(GameEngine gameEngine) {
-        gameEngine.getPlayer().Doubleshot();
+        gameEngine.getPlayer().activateSecondaryFire();
     }
 
     @Override
     public void deactivate(GameEngine gameEngine) {
-        gameEngine.getPlayer().NoDoubleShot();
+        gameEngine.getPlayer().deactivateSecondaryFire();
     }
 
     @Override

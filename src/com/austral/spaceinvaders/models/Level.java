@@ -3,17 +3,17 @@ package com.austral.spaceinvaders.models;
 public enum Level {
 
 	FIRST(4, 3, 2, 1),
-	SECOND(3, 3, 3, 2),
-	THIRD(2, 3, 4, 3),
-	FOURTH(1, 3, 5, 4),
-	FIFTH(0, 3, 6, 5);
+	SECOND(3, 3, 3, 1.2),
+	THIRD(2, 3, 4, 1.6),
+	FOURTH(1, 3, 5, 2),
+	FIFTH(0, 3, 6, 2.5);
 
 	private int initialShieldCount;
 	private int initialLiveCount;
 	private int alienCount;
-	private int alienDifficultyMultiplier;
+	private double alienDifficultyMultiplier;
 
-	Level(final int initialShieldCount, final int initialLiveCount, final int alienCount, final int alienDifficultyMultiplier) {
+	Level(final int initialShieldCount, final int initialLiveCount, final int alienCount, final double alienDifficultyMultiplier) {
 		this.initialShieldCount = initialShieldCount;
 		this.initialLiveCount = initialLiveCount;
 		this.alienCount = alienCount;
@@ -33,7 +33,7 @@ public enum Level {
 		return alienCount;
 	}
 
-	public int getAlienDifficultyMultiplier() {
+	public double getAlienDifficultyMultiplier() {
 		return alienDifficultyMultiplier;
 	}
 }

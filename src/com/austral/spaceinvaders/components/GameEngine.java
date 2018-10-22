@@ -67,7 +67,7 @@ public class GameEngine implements GlobalConfiguration {
 		}
 	}
 
-	private void spawnAliens(int alienCount, int difficultyMultiplier) {
+	private void spawnAliens(int alienCount, double difficultyMultiplier) {
 		for (int count = 0; count < alienCount; count++) {
 			aliens.add(AlienFactory.createSmall(RandomGenerator.getRandomIntBetween(60, frameWidth - 120), 10, difficultyMultiplier));
 			aliens.add(AlienFactory.createMedium(RandomGenerator.getRandomIntBetween(60, frameWidth - 120), 10, difficultyMultiplier));
@@ -117,7 +117,7 @@ public class GameEngine implements GlobalConfiguration {
 
 	private boolean isValidPlayerMove() {
 		final Rectangle playerCollisionBox = player.getCollisionBox();
-		playerCollisionBox.translate(player.getxVelocity().getVector(), 0);
+		playerCollisionBox.translate((int) player.getxVelocity().getVector(), 0);
 		return gameEnvironment.isRectangleOnScreen(playerCollisionBox);
 	}
 
@@ -170,9 +170,7 @@ public class GameEngine implements GlobalConfiguration {
 		}
 
 		//Animate sprites for next game tick
-		if(gameTicksSinceUFOSpawn % 2 == 0){
-			animateAliens();
-		}
+		animateAliens();
 		animateBombs();
 		animateShots();
 
@@ -267,7 +265,7 @@ public class GameEngine implements GlobalConfiguration {
 	}
 
 	public synchronized void notifySpaceBarPressed() {
-		if (player.isDoubleshotActive()) {
+		if (player.isUsingSecondaryFire()) {
 			shots.add(player.fire());
 			shots.add(player.secondaryFire());
 		} else {

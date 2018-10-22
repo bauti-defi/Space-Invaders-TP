@@ -43,7 +43,6 @@ public class GameFrame extends JFrame implements GlobalConfiguration {
 
 	public void showInvasion() {
 		setView(GameOverView.createInvasionView(this));
-		repaint();
 	}
 
 	public void play() {

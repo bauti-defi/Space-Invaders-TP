@@ -11,7 +11,7 @@ public interface GlobalConfiguration {
 	static int playerStartX = 200;
 	static int playerStartY = 540;
 	static int shieldHealth = 50;
-	static int consecutiveHitsForModifier = 4;
+	static int consecutiveHitsForModifier = 2;
 	static int minimumUFOSpawnDelay = 45;
 	static int maxUFOSPawnDelay = 60;
 	static String leadboardFilePath = System.getProperty("user.home") + File.separator + "/Desktop" + File.separator + "space-invaders-leaderboard.txt";

@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 public class PlayerHiscore {
 
+	private final static String SEPERATOR = "::";
 	private final String name;
 	private final int score;
 	private final LocalDateTime date;
@@ -35,7 +36,7 @@ public class PlayerHiscore {
 
 	@Override
 	public String toString() {
-		return score + "::" + name + "::" + date;
+		return name + SEPERATOR + score + SEPERATOR + date;
 	}
 
 	public String getFormatted() {
@@ -48,7 +49,7 @@ public class PlayerHiscore {
 	}
 
 	public static PlayerHiscore parse(String line) {
-		final String[] parts = line.split("::");
-		return new PlayerHiscore(parts[1], Integer.parseInt(parts[0]), LocalDateTime.parse(parts[2]));
+		final String[] parts = line.split(SEPERATOR);
+		return new PlayerHiscore(parts[0], Integer.parseInt(parts[1]), LocalDateTime.parse(parts[2]));
 	}
 }

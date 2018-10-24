@@ -11,7 +11,6 @@ import java.nio.file.Files;
 
 public class GameSession implements GlobalConfiguration {
 
-
 	private final GameFrame gameFrame;
 	private final GamePlayer gamePlayer;
 	private final File hiscoresFile;
@@ -41,16 +40,35 @@ public class GameSession implements GlobalConfiguration {
 		return gamePlayer.getName();
 	}
 
-	public void quitGame() {
+	private void shutdownGame() {
 		if (gameThread.isAlive()) {
 			gameThread.interrupt();
 		}
+	}
+
+	public void victorious() {
+		gameFrame.showVictory();
+		closeGame();
+	}
+
+	public void defeated() {
+		gameFrame.showDefeat();
+		closeGame();
+	}
+
+	public void invaded() {
+		gameFrame.showInvasion();
+		closeGame();
+	}
+
+	public void quit() {
+		shutdownGame();
 		gameFrame.showMainMenu();
 	}
 
-	public void closeGame() {
+	private void closeGame() {
+		shutdownGame();
 		savePlayerHiscore(gamePlayer.getHiscore());
-		quitGame();
 	}
 
 	private void savePlayerHiscore(PlayerHiscore playerHiscore) {
@@ -72,7 +90,7 @@ public class GameSession implements GlobalConfiguration {
 							return -1;
 						}
 						return 0;
-					}).map(PlayerHiscore::getFormatted).toArray(String[]::new);
+					}).map(PlayerHiscore::getFormatted).limit(10).toArray(String[]::new);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -95,6 +113,5 @@ public class GameSession implements GlobalConfiguration {
 		gameFrame.setView(gameEnvironment.getView());
 		gameThread.start();
 	}
-
 
 }

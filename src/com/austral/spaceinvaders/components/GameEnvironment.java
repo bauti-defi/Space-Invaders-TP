@@ -15,16 +15,13 @@ import static javax.swing.JOptionPane.YES_OPTION;
 
 public class GameEnvironment implements GlobalConfiguration, Runnable {
 
-
 	private final GameEngine gameEngine;
 	private final GameRemoteAdapter gameRemoteAdapter;
 	private final GameView gameView;
 	private final GameSession gameSession;
 	private boolean inGame;
 	private Level currentLevel;
-	private String gameOverMessage;
 	private boolean pause;
-
 
 	public GameEnvironment(final GameSession gameSession) {
 		this.gameSession = gameSession;
@@ -67,48 +64,45 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 
 	private void quit() {
 		inGame = false;
-		gameSession.quitGame();
+		gameSession.quit();
 	}
+
 
 	public void victory() {
 		switch (currentLevel) {
 			case FIRST:
-				gameEngine.initiateLevel(Level.SECOND);
+				currentLevel = Level.SECOND;
 				break;
 			case SECOND:
-				gameEngine.initiateLevel(Level.THIRD);
+				currentLevel = Level.THIRD;
 				break;
 			case THIRD:
-				gameEngine.initiateLevel(Level.FOURTH);
+				currentLevel = Level.FOURTH;
 				break;
 			case FOURTH:
-				gameEngine.initiateLevel(Level.FIFTH);
+				currentLevel = Level.FIFTH;
 				break;
 			case FIFTH:
 				if (inGame) {
 					inGame = false;
-					gameOverMessage = "Victory";
-					gameSession.closeGame();
+					gameSession.victorious();
 				}
-				break;
+				return;
 		}
+		gameEngine.initiateLevel(currentLevel);
 	}
 
 	public void defeat() {
 		if (inGame) {
 			inGame = false;
-			gameOverMessage = "Defeat";
-			System.out.println(gameOverMessage);
-			gameSession.closeGame();
+			gameSession.defeated();
 		}
 	}
 
 	public void invasion() {
 		if (inGame) {
 			inGame = false;
-			gameOverMessage = "Invasion";
-			System.out.println(gameOverMessage);
-			gameSession.closeGame();
+			gameSession.invaded();
 		}
 	}
 
@@ -161,10 +155,6 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 
 	public boolean inGame() {
 		return inGame;
-	}
-
-	public String getGameOverMessage() {
-		return gameOverMessage;
 	}
 
 	public List<GameObject> getGameObjects() {

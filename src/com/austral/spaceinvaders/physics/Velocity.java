@@ -2,10 +2,10 @@ package com.austral.spaceinvaders.physics;
 
 public class Velocity {
 
-	private int magnitude;
+	private double magnitude;
 	private Direction direction;
 
-	public Velocity(final int magnitude, final Direction direction) {
+	public Velocity(final double magnitude, final Direction direction) {
 		this.magnitude = magnitude;
 		this.direction = direction;
 	}
@@ -14,7 +14,7 @@ public class Velocity {
 		this(0, Direction.SOUTH);
 	}
 
-	public int getMagnitude() {
+	public double getMagnitude() {
 		return magnitude;
 	}
 
@@ -34,7 +34,7 @@ public class Velocity {
 		return magnitude != 0;
 	}
 
-	public int getVector() {
+	public double getVector() {
 		return (direction == Direction.NORTH || direction == Direction.WEST) ? magnitude * -1 : magnitude;
 	}
 }

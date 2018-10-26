@@ -30,6 +30,7 @@ public class GameEngine implements GlobalConfiguration {
 	private final GameModifierService gameModifierService;
 	private int gameTicksSinceUFOSpawn;
 	private long randomTimeUFO;
+	private int consecutiveHits;
 
 	public GameEngine(GameEnvironment gameEnvironment) {
 		this.gameEnvironment = gameEnvironment;
@@ -69,8 +70,8 @@ public class GameEngine implements GlobalConfiguration {
 
 	private void spawnAliens(int alienCount, double difficultyMultiplier) {
 		for (int count = 0; count < alienCount; count++) {
-			aliens.add(AlienFactory.createSmall(RandomGenerator.getRandomIntBetween(60, frameWidth - 120), 10, difficultyMultiplier));
-			aliens.add(AlienFactory.createMedium(RandomGenerator.getRandomIntBetween(60, frameWidth - 120), 10, difficultyMultiplier));
+			//aliens.add(AlienFactory.createSmall(RandomGenerator.getRandomIntBetween(60, frameWidth - 120), 10, difficultyMultiplier));
+			//aliens.add(AlienFactory.createMedium(RandomGenerator.getRandomIntBetween(60, frameWidth - 120), 10, difficultyMultiplier));
 			aliens.add(AlienFactory.createLarge(RandomGenerator.getRandomIntBetween(60, frameWidth - 120), 10, difficultyMultiplier));
 		}
 	}
@@ -122,6 +123,7 @@ public class GameEngine implements GlobalConfiguration {
 	}
 
 	public synchronized void executeNextAnimationCycle() {
+
 		//Delete all alien and shot collision flags
 		getAlienCollisions().forEach(hit -> {
 			hit.getAlphaCollider().takeDamage(hit.getBetaCollider().getDamage());
@@ -204,20 +206,16 @@ public class GameEngine implements GlobalConfiguration {
 	private ArrayList<CollisionFlag<Alien, Shot>> getAlienCollisions() {
 		final ArrayList<CollisionFlag<Alien, Shot>> hits = new ArrayList<>();
 
-		int consecutiveHits = 0;
 		//collisionFlags between aliens and shots
 		for (Shot shot : shots) {
-			int initialConsecutiveHits = consecutiveHits;
 			for (Alien alien : aliens) {
 				if (alien.collided(shot)) {
 					hits.add(new CollisionFlag<>(alien, shot));
 					if (!gameModifierService.isGameModifierActive() && ++consecutiveHits >= consecutiveHitsForModifier) {
 						gameModifierService.activateModifier();
+						consecutiveHits = 0;
 					}
 				}
-			}
-			if (initialConsecutiveHits == consecutiveHits) {
-				consecutiveHits = 0;
 			}
 		}
 

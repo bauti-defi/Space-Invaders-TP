@@ -12,7 +12,7 @@ public class AlienFactory {
 	private final static String LARGE_ALIEN_IMAGE = "src/images/large_alien.png";
 
 	public static Alien createSmall(int x, int y, double difficultyMultiplier) {
-		return new Alien(x, y, new Velocity(2 * difficultyMultiplier, RandomGenerator.getRandomXDirection()), new Velocity(2 * difficultyMultiplier, Direction.SOUTH), 50, new Velocity(4 * difficultyMultiplier, Direction.SOUTH), 30, SMALL_ALIEN_IMAGE);
+		return new Alien(x, y, new Velocity(1 * difficultyMultiplier, RandomGenerator.getRandomXDirection()), new Velocity(2 * difficultyMultiplier, Direction.SOUTH), 50, new Velocity(4 * difficultyMultiplier, Direction.SOUTH), 30, SMALL_ALIEN_IMAGE);
 	}
 
 	public static Alien createMedium(int x, int y, double difficultyMultiplier) {

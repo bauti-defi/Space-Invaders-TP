@@ -1,9 +1,9 @@
 # Space-Invaders-TP
 <html>
   <body>  
-  <h2> <b> Universidad Austral | Introducción a la Progrmación 2 </b> </h2>
+  <h2> <b> Universidad Austral | Introducción a la Programación 2 </b> </h2>
   
-  <p> Este código es parte del primer Trabajo Práctico de la materia Introducción a la Programación 2 de la Universidad Austral </p>
+  <p> Este código es parte del primer Trabajo Práctico de la materia <i>Introducción a la Programación 2 </i> de la Universidad Austral </p>
   <p> Miembros del equipo: </p>
   
   <ul>

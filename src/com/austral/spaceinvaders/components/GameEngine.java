@@ -27,14 +27,13 @@ public class GameEngine implements GlobalConfiguration {
 	private ArrayList<Shot> shots = new ArrayList<>();
 	private ArrayList<Bomb> bombs = new ArrayList<>();
 	private ArrayList<Shield> shields = new ArrayList<>();
-	private final GameModifierService gameModifierService;
+	private final GameModifierDelegator gameModifierDelegator;
 	private int gameTicksSinceUFOSpawn;
 	private long randomTimeUFO;
-	private int consecutiveHits;
 
 	public GameEngine(GameEnvironment gameEnvironment) {
 		this.gameEnvironment = gameEnvironment;
-		this.gameModifierService = new GameModifierService(this);
+		this.gameModifierDelegator = new GameModifierDelegator(this);
 		initiateLevel(Level.FIRST);
 	}
 
@@ -47,11 +46,11 @@ public class GameEngine implements GlobalConfiguration {
 	}
 
 	private void reset() {
+		gameModifierDelegator.forceStop();
 		aliens.clear();
 		shots.clear();
 		shields.clear();
 		bombs.clear();
-		gameModifierService.forceDeactivateModifier();
 		randomTimeUFO = RandomGenerator.getRandomIntBetween(minimumUFOSpawnDelay, maxUFOSPawnDelay) * 1000;
 	}
 
@@ -185,8 +184,6 @@ public class GameEngine implements GlobalConfiguration {
 
 		//spawn new alien bombs
 		dropAlienBombs();
-
-		gameModifierService.ping();
 	}
 
 	private void spawnUFO() {
@@ -211,13 +208,12 @@ public class GameEngine implements GlobalConfiguration {
 			for (Alien alien : aliens) {
 				if (alien.collided(shot)) {
 					hits.add(new CollisionFlag<>(alien, shot));
-					if (!gameModifierService.isGameModifierActive() && ++consecutiveHits >= consecutiveHitsForModifier) {
-						gameModifierService.activateModifier();
-						consecutiveHits = 0;
-					}
 				}
 			}
 		}
+
+		//
+		gameModifierDelegator.analyzeFrame(hits.stream().map(collisionFlag -> collisionFlag.getBetaCollider()));
 
 		return hits;
 	}
@@ -272,7 +268,7 @@ public class GameEngine implements GlobalConfiguration {
 	}
 
 	public String getActiveGameModifierName() {
-		return gameModifierService.getActiveGameModifier();
+		return gameModifierDelegator.getCurrentGameModifier();
 	}
 
 	public ArrayList<GameObject> getGameObjects() {

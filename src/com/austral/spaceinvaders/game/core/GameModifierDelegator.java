@@ -55,9 +55,9 @@ public class GameModifierDelegator implements GlobalConfiguration {
 
 	public String getCurrentGameModifier() {
 		if (delegate == null) {
-			return DEFAULT_MESSAGE + (currentConsecutiveHitCount - consecutiveHitsForModifier);
+			return DEFAULT_MESSAGE + (consecutiveHitsForModifier - currentConsecutiveHitCount);
 		}
-		return delegate.isActive() ? delegate.getModifierName() : DEFAULT_MESSAGE + (currentConsecutiveHitCount - consecutiveHitsForModifier);
+		return delegate.isActive() ? delegate.getModifierName() : DEFAULT_MESSAGE + (consecutiveHitsForModifier - currentConsecutiveHitCount);
 	}
 
 }

@@ -1,13 +1,13 @@
-package com.austral.spaceinvaders.components;
+package com.austral.spaceinvaders.game.core;
 
 import com.austral.spaceinvaders.GlobalConfiguration;
-import com.austral.spaceinvaders.components.views.GameView;
+import com.austral.spaceinvaders.game.core.session.GameSession;
+import com.austral.spaceinvaders.game.views.GameView;
 import com.austral.spaceinvaders.models.Level;
 import com.austral.spaceinvaders.models.gameobjects.GameObject;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.util.List;
 
 import static javax.swing.JOptionPane.YES_NO_OPTION;
@@ -16,7 +16,6 @@ import static javax.swing.JOptionPane.YES_OPTION;
 public class GameEnvironment implements GlobalConfiguration, Runnable {
 
 	private final GameEngine gameEngine;
-	private final GameRemoteAdapter gameRemoteAdapter;
 	private final GameView gameView;
 	private final GameSession gameSession;
 	private boolean inGame;
@@ -26,7 +25,6 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 	public GameEnvironment(final GameSession gameSession) {
 		this.gameSession = gameSession;
 		this.gameEngine = new GameEngine(this);
-		this.gameRemoteAdapter = new GameRemoteAdapter(this);
 		this.gameView = new GameView(this);
 		this.currentLevel = Level.FIRST;
 	}
@@ -34,8 +32,6 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 	@Override
 	public void run() {
 		inGame = true;
-		gameView.addKeyListener(gameRemoteAdapter);
-		gameView.requestFocusInWindow();
 
 		long renderStartTime;
 		while (inGame) {
@@ -107,18 +103,24 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 	}
 
 
-	public void notifyKeyPressed(KeyEvent event) {
-		switch (event.getKeyCode()) {
-			case KeyEvent.VK_LEFT:
+	public void notifyKeyPressed(char key) {
+		switch (key) {
+			case 'a':
 				gameEngine.notifyLeftArrowPressed();
 				break;
-			case KeyEvent.VK_RIGHT:
+			case 'd':
 				gameEngine.notifyRightArrowPressed();
 				break;
-			case KeyEvent.VK_SPACE:
+			case 's':
 				gameEngine.notifySpaceBarPressed();
 				break;
-			case KeyEvent.VK_ESCAPE:
+			case 'e':
+				//client
+				quit();
+				pause = false;
+				break;
+			case 'q':
+				//server
 				pause = true;
 				if (JOptionPane.showConfirmDialog(gameView, "Abandonar?", null, YES_NO_OPTION) == YES_OPTION) {
 					quit();
@@ -128,10 +130,10 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 		}
 	}
 
-	public void notifyKeyReleased(KeyEvent event) {
-		switch (event.getKeyCode()) {
-			case KeyEvent.VK_LEFT:
-			case KeyEvent.VK_RIGHT:
+	public void notifyKeyReleased(char key) {
+		switch (key) {
+			case 'a':
+			case 'd':
 				gameEngine.notifyArrowUnPressed();
 				break;
 		}

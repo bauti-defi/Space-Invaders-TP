@@ -1,7 +1,7 @@
-package com.austral.spaceinvaders.components.views;
+package com.austral.spaceinvaders.game.views;
 
 import com.austral.spaceinvaders.GlobalConfiguration;
-import com.austral.spaceinvaders.components.GameEnvironment;
+import com.austral.spaceinvaders.game.core.GameEnvironment;
 
 import javax.swing.*;
 import java.awt.*;

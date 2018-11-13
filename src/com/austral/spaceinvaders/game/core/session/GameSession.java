@@ -1,43 +1,25 @@
-package com.austral.spaceinvaders.components;
+package com.austral.spaceinvaders.game.core.session;
 
 import com.austral.spaceinvaders.GlobalConfiguration;
+import com.austral.spaceinvaders.game.core.GameEnvironment;
+import com.austral.spaceinvaders.game.core.GameFrame;
 import com.austral.spaceinvaders.models.GamePlayer;
 import com.austral.spaceinvaders.models.PlayerHiscore;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 
-public class GameSession implements GlobalConfiguration {
+public abstract class GameSession implements GlobalConfiguration {
 
-	private final GameFrame gameFrame;
-	private final GamePlayer gamePlayer;
-	private final File hiscoresFile;
+	protected final GamePlayer gamePlayer;
+	protected final GameFrame gameFrame;
 	private GameEnvironment gameEnvironment;
 	private Thread gameThread;
 
-
-	public GameSession(final GamePlayer gamePlayer) {
+	public GameSession(GamePlayer gamePlayer) {
 		this.gamePlayer = gamePlayer;
-		this.gameFrame = new GameFrame(this);
-		this.hiscoresFile = new File(leadboardFilePath);
-		if (!hiscoresFile.exists()) {
-			try {
-				hiscoresFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.out.println("Error creating hiscores file.");
-			}
-		}
-	}
-
-	public void start() {
-		this.gameFrame.setVisible(true);
-	}
-
-	public String getPlayerName() {
-		return gamePlayer.getName();
+		this.gameFrame = new GameFrame(this, gamePlayer.getName());
 	}
 
 	private void shutdownGame() {
@@ -64,6 +46,14 @@ public class GameSession implements GlobalConfiguration {
 	public void quit() {
 		shutdownGame();
 		gameFrame.showMainMenu();
+	}
+
+	public void playGame() {
+		this.gamePlayer.resetPoints();
+		this.gameEnvironment = new GameEnvironment(this);
+		this.gameThread = new Thread(gameEnvironment);
+		gameFrame.showGameView(gameEnvironment.getView());
+		gameThread.start();
 	}
 
 	private void closeGame() {
@@ -98,20 +88,33 @@ public class GameSession implements GlobalConfiguration {
 	}
 
 	public int getCurrentPoints() {
-		return gamePlayer.getPoints();
+		return this.gamePlayer.getPoints();
 	}
 
 	public void awardPoints(int points) {
-		gamePlayer.incrementPoints(points);
+		this.gamePlayer.incrementPoints(points);
 	}
 
-	public void playGame() {
-		this.gamePlayer.resetPoints();
-		this.gameEnvironment = new GameEnvironment(this);
-		this.gameThread = new Thread(gameEnvironment);
-		gameFrame.setSize(frameWidth, frameHeight);
-		gameFrame.setView(gameEnvironment.getView());
-		gameThread.start();
+	public void notifyKeyPressed(char key) {
+		switch (key) {
+			case 'a':
+			case 'd':
+			case 's':
+			case 'e':
+			case 'q':
+				gameEnvironment.notifyKeyPressed(key);
+				break;
+		}
 	}
+
+	public void notifyKeyReleased(char key) {
+		switch (key) {
+			case 'a':
+			case 'd':
+				gameEnvironment.notifyKeyReleased(key);
+				break;
+		}
+	}
+
 
 }

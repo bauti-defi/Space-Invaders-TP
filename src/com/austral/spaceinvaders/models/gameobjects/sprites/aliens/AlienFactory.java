@@ -20,7 +20,7 @@ public class AlienFactory {
 	}
 
 	public static Alien createLarge(int x, int y, double difficultyMultiplier) {
-		return new Alien(x, y, new Velocity(0 * difficultyMultiplier, RandomGenerator.getRandomXDirection()), new Velocity(0 * difficultyMultiplier, Direction.SOUTH), 120, new Velocity(2 * difficultyMultiplier, Direction.SOUTH), 10, LARGE_ALIEN_IMAGE);
+		return new Alien(x, y, new Velocity(1 * difficultyMultiplier, RandomGenerator.getRandomXDirection()), new Velocity(1 * difficultyMultiplier, Direction.SOUTH), 120, new Velocity(2 * difficultyMultiplier, Direction.SOUTH), 10, LARGE_ALIEN_IMAGE);
 	}
 
 	public static Alien createUFO(int x, int y, int randomReward) {

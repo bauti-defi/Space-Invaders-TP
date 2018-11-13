@@ -1,6 +1,6 @@
-package com.austral.spaceinvaders.components.modifiers;
+package com.austral.spaceinvaders.game.modifiers;
 
-import com.austral.spaceinvaders.components.GameEngine;
+import com.austral.spaceinvaders.game.core.GameEngine;
 import com.austral.spaceinvaders.util.Distributable;
 
 public abstract class GameModifier implements Distributable {

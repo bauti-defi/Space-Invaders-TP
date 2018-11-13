@@ -1,7 +1,7 @@
-package com.austral.spaceinvaders.components;
+package com.austral.spaceinvaders.game.core;
 
 import com.austral.spaceinvaders.GlobalConfiguration;
-import com.austral.spaceinvaders.components.modifiers.*;
+import com.austral.spaceinvaders.game.modifiers.*;
 import com.austral.spaceinvaders.models.gameobjects.sprites.Shot;
 import com.austral.spaceinvaders.util.DistributionList;
 import com.austral.spaceinvaders.util.RandomGenerator;

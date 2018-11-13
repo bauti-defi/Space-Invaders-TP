@@ -1,4 +1,4 @@
-package com.austral.spaceinvaders.components;
+package com.austral.spaceinvaders.game.core;
 
 import com.austral.spaceinvaders.GlobalConfiguration;
 import com.austral.spaceinvaders.models.Level;
@@ -69,8 +69,8 @@ public class GameEngine implements GlobalConfiguration {
 
 	private void spawnAliens(int alienCount, double difficultyMultiplier) {
 		for (int count = 0; count < alienCount; count++) {
-			//aliens.add(AlienFactory.createSmall(RandomGenerator.getRandomIntBetween(60, frameWidth - 120), 10, difficultyMultiplier));
-			//aliens.add(AlienFactory.createMedium(RandomGenerator.getRandomIntBetween(60, frameWidth - 120), 10, difficultyMultiplier));
+			aliens.add(AlienFactory.createSmall(RandomGenerator.getRandomIntBetween(60, frameWidth - 120), 10, difficultyMultiplier));
+			aliens.add(AlienFactory.createMedium(RandomGenerator.getRandomIntBetween(60, frameWidth - 120), 10, difficultyMultiplier));
 			aliens.add(AlienFactory.createLarge(RandomGenerator.getRandomIntBetween(60, frameWidth - 120), 10, difficultyMultiplier));
 		}
 	}

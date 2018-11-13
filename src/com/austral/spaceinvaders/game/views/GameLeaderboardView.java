@@ -1,6 +1,6 @@
-package com.austral.spaceinvaders.components.views;
+package com.austral.spaceinvaders.game.views;
 
-import com.austral.spaceinvaders.components.GameFrame;
+import com.austral.spaceinvaders.game.core.GameFrame;
 
 import javax.swing.*;
 import java.awt.*;

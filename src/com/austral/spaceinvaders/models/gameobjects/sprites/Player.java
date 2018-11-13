@@ -4,12 +4,10 @@ import com.austral.spaceinvaders.models.gameobjects.Controllable;
 import com.austral.spaceinvaders.physics.Direction;
 import com.austral.spaceinvaders.physics.Velocity;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class Player extends Character implements Controllable {
 
 	private static final String PLAYER_IMAGE = "src/images/player.png";
-	private final AtomicInteger shotIdGenerator = new AtomicInteger(0);
+	private int lastShotId;
 
 	public Player(int x, int y, int health) {
 		super(x, y, health, PLAYER_IMAGE);
@@ -17,11 +15,11 @@ public class Player extends Character implements Controllable {
 
 	@Override
 	public Shot fire() {
-		return new Shot(getX() + (getWidth() / 2), getY(), shotIdGenerator.getAndIncrement());
+		return new Shot(getX() + (getWidth() / 2), getY(), ++lastShotId);
 	}
 
 	public Shot secondaryFire() {
-		return new Shot(getX() + (getWidth() / 4), getY(), shotIdGenerator.getAndIncrement());
+		return new Shot(getX() + (getWidth() / 4), getY(), ++lastShotId);
 	}
 
 	@Override

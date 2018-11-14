@@ -15,7 +15,7 @@
   
   <p> El diagrama de clases puede ser encontrado en el un archivo en <a href=https://www.lucidchart.com/invitations/accept/1e8179af-9c2f-4f2d-b1ca-3087157653d0> LucidChart </a> </p>
   
-  <p> Para ordenar las clases, utilizamos Java MVC; para la GUI, utilizamos una combinación de Java AWT, y Java Spring </p>
+  <p> Para ordenar las clases, utilizamos MVC (Model, View, Controller) pattern; para la GUI, utilizamos una combinación de Java AWT, y Java Swing. </p>
   
   
   

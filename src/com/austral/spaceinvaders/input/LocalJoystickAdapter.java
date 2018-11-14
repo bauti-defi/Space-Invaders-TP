@@ -38,12 +38,13 @@ public class LocalJoystickAdapter extends KeyAdapter {
 	public void keyReleased(final KeyEvent e) {
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_LEFT:
-			case 'a':
-				gameSession.notifyKeyReleased('w');
+				gameSession.notifyKeyReleased('a');
 				break;
-			case 'd':
 			case KeyEvent.VK_RIGHT:
 				gameSession.notifyKeyReleased('d');
+				break;
+			default:
+				gameSession.notifyKeyReleased(e.getKeyChar());
 				break;
 		}
 	}

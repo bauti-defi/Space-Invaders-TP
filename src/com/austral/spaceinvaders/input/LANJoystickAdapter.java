@@ -36,12 +36,13 @@ public class LANJoystickAdapter extends KeyAdapter {
 	public void keyReleased(final KeyEvent e) {
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_LEFT:
-			case 'a':
-				lanJoystick.sendKeyReleased('w');
+				lanJoystick.sendKeyReleased('a');
 				break;
-			case 'd':
 			case KeyEvent.VK_RIGHT:
 				lanJoystick.sendKeyReleased('d');
+				break;
+			default:
+				lanJoystick.sendKeyReleased(e.getKeyChar());
 				break;
 		}
 	}

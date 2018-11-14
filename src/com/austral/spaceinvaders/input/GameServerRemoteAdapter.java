@@ -28,6 +28,9 @@ public class GameServerRemoteAdapter extends KeyAdapter {
 			case KeyEvent.VK_ESCAPE:
 				gameSession.notifyKeyPressed('q');
 				break;
+			default:
+				gameSession.notifyKeyPressed(e.getKeyChar());
+				break;
 		}
 	}
 

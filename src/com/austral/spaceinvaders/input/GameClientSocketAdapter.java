@@ -9,4 +9,5 @@ public interface GameClientSocketAdapter {
 
 	//@WebMethod
 	void keyReleaseReceived(String playerAuthToken, char key);
+
 }

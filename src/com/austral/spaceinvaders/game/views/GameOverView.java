@@ -24,18 +24,15 @@ public class GameOverView extends JPanel {
 		final JPanel buttonPannel = new JPanel();
 		buttonPannel.setBackground(Color.BLACK);
 
-		this.leaderboard = new JButton("Leaderboard");
-		messageLabel.setFont(new Font("Arial", Font.PLAIN, 30));
+		this.leaderboard = new JButton("Leaderboard (4)");
 		leaderboard.addActionListener((e) -> gameFrame.showLeaderboard());
 		buttonPannel.add(leaderboard, BorderLayout.NORTH);
 
-		this.playAgain = new JButton("Play Again");
-		messageLabel.setFont(new Font("Arial", Font.PLAIN, 50));
+		this.playAgain = new JButton("Play Again (5)");
 		playAgain.addActionListener((e) -> gameFrame.play());
 		buttonPannel.add(playAgain, BorderLayout.CENTER);
 
-		this.mainMenu = new JButton("Main Menu");
-		messageLabel.setFont(new Font("Arial", Font.PLAIN, 30));
+		this.mainMenu = new JButton("Exit (6)");
 		mainMenu.addActionListener((e) -> gameFrame.showMainMenu());
 		buttonPannel.add(mainMenu, BorderLayout.SOUTH);
 

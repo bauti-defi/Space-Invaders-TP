@@ -26,7 +26,7 @@ public class GameLeaderboardView extends JPanel {
 		scrollPane.setBorder(BorderFactory.createDashedBorder(Color.WHITE));
 		add(scrollPane, BorderLayout.CENTER);
 
-		this.back = new JButton("Volver");
+		this.back = new JButton("Volver (3)");
 		back.setFont(new Font("Arial", Font.BOLD, 30));
 		back.addActionListener((e) -> {
 			gameFrame.showMainMenu();

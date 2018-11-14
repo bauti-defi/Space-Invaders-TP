@@ -20,7 +20,6 @@ import java.util.ArrayList;
 
 public class GameEngine implements GlobalConfiguration {
 
-
 	private final GameEnvironment gameEnvironment;
 	private Player player;
 	private ArrayList<Alien> aliens = new ArrayList<>();
@@ -212,7 +211,6 @@ public class GameEngine implements GlobalConfiguration {
 			}
 		}
 
-		//
 		gameModifierDelegator.analyzeFrame(hits.stream().map(collisionFlag -> collisionFlag.getBetaCollider()));
 
 		return hits;

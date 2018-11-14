@@ -10,9 +10,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-import static javax.swing.JOptionPane.YES_NO_OPTION;
-import static javax.swing.JOptionPane.YES_OPTION;
-
 public class GameEnvironment implements GlobalConfiguration, Runnable {
 
 	private final GameEngine gameEngine;
@@ -58,12 +55,6 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 		return gameTickDuration - renderLagDuration;
 	}
 
-	private void quit() {
-		inGame = false;
-		gameSession.quit();
-	}
-
-
 	public void victory() {
 		switch (currentLevel) {
 			case FIRST:
@@ -102,6 +93,14 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 		}
 	}
 
+	public void pause() {
+		this.pause = true;
+	}
+
+	public void resume() {
+		this.pause = false;
+	}
+
 
 	public void notifyKeyPressed(char key) {
 		switch (key) {
@@ -113,19 +112,6 @@ public class GameEnvironment implements GlobalConfiguration, Runnable {
 				break;
 			case 's':
 				gameEngine.notifySpaceBarPressed();
-				break;
-			case 'e':
-				//client
-				quit();
-				pause = false;
-				break;
-			case 'q':
-				//server
-				pause = true;
-				if (JOptionPane.showConfirmDialog(gameView, "Abandonar?", null, YES_NO_OPTION) == YES_OPTION) {
-					quit();
-				}
-				pause = false;
 				break;
 		}
 	}

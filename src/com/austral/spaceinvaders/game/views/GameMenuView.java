@@ -13,7 +13,7 @@ public class GameMenuView extends JPanel {
 		setLayout(null);
 		setBackground(Color.BLACK);
 
-		this.play = new JButton("Jugar");
+		this.play = new JButton("Jugar (1)");
 		this.play.addActionListener((e) -> {
 			gameFrame.play();
 		});
@@ -28,7 +28,7 @@ public class GameMenuView extends JPanel {
 		titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
 		add(titleLabel);
 
-		this.leaderboard = new JButton("Leaderboard");
+		this.leaderboard = new JButton("Leaderboard (2)");
 		this.leaderboard.addActionListener((e) -> {
 			gameFrame.showLeaderboard();
 		});

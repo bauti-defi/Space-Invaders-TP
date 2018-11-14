@@ -5,11 +5,11 @@ import com.austral.spaceinvaders.game.core.session.LocalGameSession;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class GameServerRemoteAdapter extends KeyAdapter {
+public class LocalJoystickAdapter extends KeyAdapter {
 
 	private final LocalGameSession gameSession;
 
-	public GameServerRemoteAdapter(LocalGameSession gameSession) {
+	public LocalJoystickAdapter(LocalGameSession gameSession) {
 		this.gameSession = gameSession;
 	}
 

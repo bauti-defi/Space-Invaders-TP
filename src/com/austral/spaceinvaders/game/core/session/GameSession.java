@@ -170,12 +170,7 @@ public abstract class GameSession implements GlobalConfiguration {
 	}
 
 	public void notifyKeyReleased(char key) {
-		switch (key) {
-			case 'a':
-			case 'd':
-				gameEnvironment.notifyKeyReleased(key);
-				break;
-		}
+		gameEnvironment.notifyKeyReleased(key);
 	}
 
 

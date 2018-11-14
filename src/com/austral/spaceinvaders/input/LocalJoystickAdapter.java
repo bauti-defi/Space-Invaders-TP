@@ -36,10 +36,15 @@ public class LocalJoystickAdapter extends KeyAdapter {
 
 	@Override
 	public void keyReleased(final KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			gameSession.notifyKeyReleased('a');
-		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			gameSession.notifyKeyReleased('d');
+		switch (e.getKeyCode()) {
+			case KeyEvent.VK_LEFT:
+			case 'a':
+				gameSession.notifyKeyReleased('w');
+				break;
+			case 'd':
+			case KeyEvent.VK_RIGHT:
+				gameSession.notifyKeyReleased('d');
+				break;
 		}
 	}
 

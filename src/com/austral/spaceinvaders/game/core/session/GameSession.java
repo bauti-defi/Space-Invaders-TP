@@ -7,6 +7,7 @@ import com.austral.spaceinvaders.models.GamePlayer;
 import com.austral.spaceinvaders.models.PlayerHiscore;
 
 import javax.swing.*;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,12 +19,14 @@ public abstract class GameSession implements GlobalConfiguration {
 
 	protected final GamePlayer gamePlayer;
 	protected final GameFrame gameFrame;
+	private final File hiscoresFile;
 	private GameEnvironment gameEnvironment;
 	private Thread gameThread;
 	private GameState currentGameState = GameState.MAIN_MENU;
 
 	public GameSession(GamePlayer gamePlayer) {
 		this.gamePlayer = gamePlayer;
+		this.hiscoresFile = new File(leadboardFilePath);
 		this.gameFrame = new GameFrame(this, gamePlayer.getName());
 	}
 

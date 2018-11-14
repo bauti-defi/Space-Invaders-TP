@@ -12,6 +12,7 @@ public abstract class GameController implements GlobalConfiguration {
 
 	public GameController(GamePlayer gamePlayer) {
 		this.gamePlayer = gamePlayer;
+		final File hiscoresFile = new File(leadboardFilePath);
 		if (!hiscoresFile.exists()) {
 			try {
 				hiscoresFile.createNewFile();

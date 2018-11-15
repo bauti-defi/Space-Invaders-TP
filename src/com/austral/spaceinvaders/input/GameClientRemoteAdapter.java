@@ -2,7 +2,10 @@ package com.austral.spaceinvaders.input;
 
 import com.austral.spaceinvaders.game.core.session.LANGameSession;
 
-//@WebService(endpointInterface = "com.austral.spaceinvaders.input.GameClientSocketAdapter")
+import javax.jws.WebService;
+
+@SuppressWarnings("ValidExternallyBoundObject")
+@WebService(endpointInterface = "com.austral.spaceinvaders.input.GameClientSocketAdapter")
 public class GameClientRemoteAdapter implements GameClientSocketAdapter {
 
 	private final LANGameSession gameSession;

@@ -7,9 +7,12 @@ import com.austral.spaceinvaders.game.core.session.LocalGameSession;
 import com.austral.spaceinvaders.models.LANPlayer;
 import com.austral.spaceinvaders.models.LocalPlayer;
 
+import javax.jws.WebService;
+import javax.xml.ws.Endpoint;
 import java.util.HashMap;
 
-//@WebService(endpointInterface = "com.austral.spaceinvaders.controllers.ServerAdapter")
+@SuppressWarnings("ValidExternallyBoundObject")
+@WebService(endpointInterface = "com.austral.spaceinvaders.controllers.ServerAdapter")
 public class ServerController extends GameController implements GlobalConfiguration, ServerAdapter {
 
 	private final HashMap<Integer, GameSession> lanGameSessions = new HashMap<>();
@@ -18,7 +21,7 @@ public class ServerController extends GameController implements GlobalConfigurat
 	public ServerController(LocalPlayer localPlayer) {
 		super(localPlayer);
 		startGame();
-		//Endpoint.publish('api/connect', this);
+		Endpoint.publish("http://localhost:7779/tp/server", this);
 	}
 
 	@Override

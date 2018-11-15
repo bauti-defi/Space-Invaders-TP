@@ -1,13 +1,17 @@
 package com.austral.spaceinvaders.input;
 
-//@WebService
-//@SOAPBinding(style = Style.RPC)
+import javax.jws.WebMethod;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+
+@WebService
+@SOAPBinding(style = SOAPBinding.Style.RPC)
 public interface GameClientSocketAdapter {
 
-	//@WebMethod
+	@WebMethod
 	void keyPressReceived(String playerAuthToken, char key);
 
-	//@WebMethod
+	@WebMethod
 	void keyReleaseReceived(String playerAuthToken, char key);
 
 }
